@@ -13,12 +13,48 @@ const api = axios.create({
     withCredentials: true
 });
 
-// Intercepteur pour gérer les erreurs
-api.interceptors.response.use(
-    response => response,
+// Intercepteur pour les requêtes
+api.interceptors.request.use(
+    config => {
+        // Log de la requête
+        console.log('Envoi de la requête à:', config.url);
+        return config;
+    },
     error => {
-        console.error('Erreur API:', error.response?.data || error.message);
-        throw error;
+        console.error('Erreur de requête:', error);
+        return Promise.reject(error);
+    }
+);
+
+// Intercepteur pour les réponses
+api.interceptors.response.use(
+    response => {
+        // Log de la réponse
+        console.log('Réponse reçue:', response.status);
+        return response;
+    },
+    error => {
+        // Log détaillé de l'erreur
+        console.error('Erreur API détaillée:', {
+            message: error.message,
+            status: error.response?.status,
+            data: error.response?.data,
+            config: error.config
+        });
+
+        // Gestion spécifique des erreurs
+        if (error.response) {
+            // La requête a été faite et le serveur a répondu avec un code d'erreur
+            console.error('Erreur serveur:', error.response.data);
+        } else if (error.request) {
+            // La requête a été faite mais aucune réponse n'a été reçue
+            console.error('Pas de réponse du serveur');
+        } else {
+            // Une erreur s'est produite lors de la configuration de la requête
+            console.error('Erreur de configuration:', error.message);
+        }
+
+        return Promise.reject(error);
     }
 );
 

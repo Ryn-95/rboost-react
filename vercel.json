@@ -16,15 +16,20 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "server/server.js"
+      "headers": {
+        "Access-Control-Allow-Origin": "https://rboost-react-ryns-projects-df7e5921.vercel.app",
+        "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+        "Access-Control-Allow-Headers": "X-Requested-With,Content-Type,Accept,Authorization",
+        "Access-Control-Allow-Credentials": "true"
+      },
+      "continue": true
     },
     {
-      "src": "^/assets/(.*)",
-      "dest": "/assets/$1"
+      "src": "/api/(.*)",
+      "dest": "/server/server.js"
     },
     {
-      "src": "^/static/(.*)",
-      "dest": "/static/$1"
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
@@ -32,12 +37,12 @@
     }
   ],
   "env": {
-    "MONGODB_URI": "mongodb+srv://rboostadmin:Rayane95190$.@cluster0.yjkv8.mongodb.net/rboost?retryWrites=true&w=majority&appName=Cluster0",
-    "JWT_SECRET": "rboost_secret_key_very_long_and_secure_2025",
-    "EMAIL_USER": "mouhajerrayane9y@gmail.com",
-    "EMAIL_PASSWORD": "togjsbezckzsfrsy",
-    "ADMIN_EMAIL": "mouhajerrayane9y@gmail.com",
-    "WEBSITE_URL": "https://rboost-react-ryns-projects-df7e5921.vercel.app",
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "MONGODB_URI": "@mongodb_uri",
+    "JWT_SECRET": "@jwt_secret",
+    "EMAIL_USER": "@email_user",
+    "EMAIL_PASSWORD": "@email_password",
+    "ADMIN_EMAIL": "@admin_email",
+    "WEBSITE_URL": "https://rboost-react-ryns-projects-df7e5921.vercel.app"
   }
 } 
