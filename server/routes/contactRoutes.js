@@ -75,13 +75,17 @@ router.post('/', validateContact, async (req, res) => {
         const savedContact = await contact.save();
         console.log('Contact sauvegardé avec succès:', savedContact);
 
+        const siteUrl = process.env.NODE_ENV === 'production' 
+            ? 'https://rboost-react-65clukrdbnui3xoysum1dthxzcob.vercel.app'
+            : 'http://localhost:3000';
+
         // Email de notification pour l'admin
         const adminMailOptions = {
             from: {
                 name: 'RBoost Contact Form',
-                address: process.env.EMAIL_USER
+                address: 'rdigitaall@gmail.com'
             },
-            to: process.env.ADMIN_EMAIL,
+            to: 'rdigitaall@gmail.com',
             subject: `Nouveau message de ${req.body.name} - ${req.body.subject}`,
             html: `
                 <h2>Nouveau message reçu</h2>
@@ -91,7 +95,7 @@ router.post('/', validateContact, async (req, res) => {
                 <p><strong>Sujet:</strong> ${req.body.subject}</p>
                 <p><strong>Message:</strong></p>
                 <p>${req.body.message}</p>
-                <p><a href="https://rboost-react-65clukrdbnui3xoysum1dthxzcob.vercel.app/admin/messages">Voir tous les messages</a></p>
+                <p><a href="${siteUrl}/admin/messages">Voir tous les messages</a></p>
             `
         };
 
@@ -99,7 +103,7 @@ router.post('/', validateContact, async (req, res) => {
         const userMailOptions = {
             from: {
                 name: 'RBoost Digital',
-                address: process.env.EMAIL_USER
+                address: 'rdigitaall@gmail.com'
             },
             to: req.body.email,
             subject: 'Confirmation de réception de votre message',

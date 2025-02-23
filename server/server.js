@@ -19,22 +19,11 @@ dotenv.config({ path: join(__dirname, '..', '.env') });
 const app = express();
 
 // Configuration CORS
-const allowedOrigins = [
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'https://rboost-react-65clukrdbnui3xoysum1dthxzcob.vercel.app'
-];
-
 app.use(cors({
-    origin: function(origin, callback) {
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Non autorisé par CORS'));
-        }
-    },
+    origin: true, // Permet toutes les origines
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
 
 // Middleware de base
