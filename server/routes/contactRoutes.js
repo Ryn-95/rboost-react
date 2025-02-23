@@ -20,8 +20,8 @@ const transporter = nodemailer.createTransport({
     port: 465,
     secure: true,
     auth: {
-        user: process.env.EMAIL_USER || 'rdigitaall@gmail.com',
-        pass: process.env.EMAIL_PASSWORD || 'togjsbezckzsfrsy'
+        user: 'rdigitaall@gmail.com',
+        pass: 'togjsbezckzsfrsy'
     },
     tls: {
         rejectUnauthorized: false
@@ -37,7 +37,7 @@ transporter.verify((error, success) => {
     } else {
         console.log('Serveur SMTP prêt à envoyer des emails');
         console.log('Configuration utilisée:', {
-            user: process.env.EMAIL_USER || 'rdigitaall@gmail.com',
+            user: 'rdigitaall@gmail.com',
             host: 'smtp.gmail.com',
             port: 465
         });
@@ -87,8 +87,8 @@ router.post('/', validateContact, async (req, res) => {
 
         // Email de notification pour l'admin
         const adminMailOptions = {
-            from: `"RBoost Contact Form" <${process.env.EMAIL_USER || 'rdigitaall@gmail.com'}>`,
-            to: process.env.ADMIN_EMAIL || 'rdigitaall@gmail.com',
+            from: 'RBoost Contact Form <rdigitaall@gmail.com>',
+            to: 'rdigitaall@gmail.com',
             subject: `Nouveau message de ${req.body.name} - ${req.body.subject}`,
             html: `
                 <h2>Nouveau message reçu</h2>
@@ -104,7 +104,7 @@ router.post('/', validateContact, async (req, res) => {
 
         // Email de confirmation pour l'expéditeur
         const userMailOptions = {
-            from: `"RBoost Digital" <${process.env.EMAIL_USER || 'rdigitaall@gmail.com'}>`,
+            from: 'RBoost Digital <rdigitaall@gmail.com>',
             to: req.body.email,
             subject: 'Confirmation de réception de votre message',
             html: `
