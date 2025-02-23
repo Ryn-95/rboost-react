@@ -17,15 +17,9 @@ const router = express.Router();
 // Configuration de Nodemailer
 const transporter = nodemailer.createTransport({
     service: 'gmail',
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
     auth: {
-        user: 'rdigitaall@gmail.com',
-        pass: 'togjsbezckzsfrsy'
-    },
-    tls: {
-        rejectUnauthorized: false
+        user: process.env.EMAIL_USER || 'rdigitaall@gmail.com',
+        pass: process.env.EMAIL_PASSWORD || 'togjsbezckzsfrsy'
     }
 });
 
@@ -81,8 +75,8 @@ router.post('/', validateContact, async (req, res) => {
 
         // Email de notification pour l'admin
         const adminMailOptions = {
-            from: 'RBoost Contact Form <rdigitaall@gmail.com>',
-            to: 'rdigitaall@gmail.com',
+            from: process.env.EMAIL_USER || 'rdigitaall@gmail.com',
+            to: process.env.ADMIN_EMAIL || 'rdigitaall@gmail.com',
             subject: `Nouveau message de ${req.body.name} - ${req.body.subject}`,
             html: `
                 <h2>Nouveau message reçu</h2>
@@ -98,7 +92,7 @@ router.post('/', validateContact, async (req, res) => {
 
         // Email de confirmation pour l'expéditeur
         const userMailOptions = {
-            from: 'RBoost Digital <rdigitaall@gmail.com>',
+            from: process.env.EMAIL_USER || 'rdigitaall@gmail.com',
             to: req.body.email,
             subject: 'Confirmation de réception de votre message',
             html: `
