@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server/server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { 
+        "distDir": "dist",
+        "buildCommand": "npm run build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "server/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "env": {
+    "MONGODB_URI": "mongodb+srv://rboostadmin:Rayane95190$.@cluster0.yjkv8.mongodb.net/rboost?retryWrites=true&w=majority&appName=Cluster0",
+    "JWT_SECRET": "rboost_secret_key_very_long_and_secure_2025",
+    "EMAIL_USER": "mouhajerrayane9y@gmail.com",
+    "EMAIL_PASSWORD": "togjsbezckzsfrsy",
+    "ADMIN_EMAIL": "mouhajerrayane9y@gmail.com",
+    "WEBSITE_URL": "https://rboost-react-ryns-projects-df7e5921.vercel.app"
+  }
+} 

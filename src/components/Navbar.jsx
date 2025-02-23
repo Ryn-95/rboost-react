@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  useEffect(() => {
+    console.log('État utilisateur:', user);
+  }, [user]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,6 +73,11 @@ const Navbar = () => {
         }
       ]
     }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
   };
 
   return (
@@ -234,30 +246,43 @@ const Navbar = () => {
 
             {/* Boutons de connexion/inscription pour desktop */}
             <div className="hidden lg:flex items-center space-x-4">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link
-                  to="/login"
-                  className="text-sm font-medium text-gray-200 hover:text-white transition-colors px-6 py-2.5 rounded-full hover:bg-white/10"
-                >
-                  Connexion
-                </Link>
-              </motion.div>
-              
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link
-                  to="/register"
-                  className="text-sm font-medium bg-gradient-to-r from-blue-400 to-purple-400 text-white px-6 py-2.5 rounded-full hover:shadow-lg hover:shadow-blue-500/25 transition-all relative group"
-                >
-                  <span className="relative z-10">Inscription</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </Link>
-              </motion.div>
+              {user ? (
+                <div className="flex items-center space-x-4">
+                  {user.isAdmin && (
+                    <Link
+                      to="/admin"
+                      className="text-sm font-medium transition-all duration-300 px-6 py-2.5 rounded-full relative overflow-hidden text-white bg-gradient-to-r from-blue-400/20 to-purple-400/20 hover:from-blue-400/30 hover:to-purple-400/30"
+                    >
+                      Admin
+                    </Link>
+                  )}
+                  <button
+                    onClick={handleLogout}
+                    className="text-sm font-medium transition-all duration-300 px-6 py-2.5 rounded-full bg-red-500/20 text-red-400 hover:bg-red-500/30"
+                  >
+                    Déconnexion
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Link
+                      to="/login"
+                      className="text-sm font-medium text-gray-200 hover:text-white transition-colors px-6 py-2.5 rounded-full hover:bg-white/10"
+                    >
+                      Connexion
+                    </Link>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Link
+                      to="/register"
+                      className="text-sm font-medium bg-gradient-to-r from-blue-400 to-purple-400 text-white px-6 py-2.5 rounded-full hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
+                    >
+                      Inscription
+                    </Link>
+                  </motion.div>
+                </>
+              )}
             </div>
 
             {/* Bouton menu mobile */}
@@ -304,115 +329,118 @@ const Navbar = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "100vh" }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="lg:hidden fixed inset-0 bg-[#1a1a2e]/95 backdrop-blur-xl z-40"
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 bg-[#1a1a2e]/95 backdrop-blur-xl z-50 lg:hidden overflow-y-auto"
             >
-              <div className="h-full flex flex-col justify-between px-4 py-20 overflow-y-auto">
-                <div className="space-y-10">
-                  <div>
-                    <motion.div 
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 }}
-                      className="mb-8"
-                    >
-                      <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">
-                        Nos Services
-                      </h3>
-                      <div className="grid grid-cols-1 gap-4">
-                        {megaMenuContent.services.columns[0].items.map((item, index) => (
-                          <motion.div
-                            key={item.name}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.2 + index * 0.1 }}
+              <div className="min-h-screen flex flex-col px-4 py-20">
+                <div className="flex-1 space-y-6">
+                  {/* Services */}
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-bold text-white bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                      Nos Services
+                    </h3>
+                    <div className="grid gap-4">
+                      {megaMenuContent.services.columns[0].items.map((item, index) => (
+                        <motion.div
+                          key={item.name}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                        >
+                          <Link
+                            to={item.link}
+                            onClick={() => setIsMenuOpen(false)}
+                            className="block p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-white/10"
                           >
-                            <Link
-                              to={item.link}
-                              onClick={() => setIsMenuOpen(false)}
-                              className="block p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300 border border-white/10 hover:border-white/20"
-                            >
-                              <div className="flex items-center space-x-4">
-                                <span className="text-2xl">{item.icon}</span>
-                                <div>
-                                  <span className="block text-white font-medium">{item.name}</span>
-                                  <span className="text-sm text-gray-400">{item.description}</span>
-                                  <span className="text-sm text-blue-400 block mt-1">{item.price}</span>
-                                </div>
+                            <div className="flex items-center space-x-3">
+                              <span className="text-2xl">{item.icon}</span>
+                              <div>
+                                <span className="block font-medium text-white">{item.name}</span>
+                                <span className="text-sm text-gray-400">{item.description}</span>
                               </div>
-                            </Link>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </motion.div>
+                            </div>
+                          </Link>
+                        </motion.div>
+                      ))}
+                    </div>
                   </div>
 
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="space-y-6"
-                  >
+                  {/* Navigation principale */}
+                  <div className="space-y-4">
                     <Link
                       to="/about"
                       onClick={() => setIsMenuOpen(false)}
-                      className="block px-4 py-3 text-lg font-medium text-white hover:bg-white/5 rounded-xl transition-all"
+                      className="block px-4 py-3 text-white hover:bg-white/5 rounded-xl transition-all"
                     >
                       À propos
                     </Link>
-
                     <Link
                       to="/contact"
                       onClick={() => setIsMenuOpen(false)}
-                      className="block px-4 py-3 text-lg font-medium text-white hover:bg-white/5 rounded-xl transition-all"
+                      className="block px-4 py-3 text-white hover:bg-white/5 rounded-xl transition-all"
                     >
                       Contact
                     </Link>
-                  </motion.div>
+                  </div>
                 </div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="space-y-4"
-                >
-                  <Link
-                    to="/login"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="block w-full py-3 text-center text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all"
-                  >
-                    Connexion
-                  </Link>
-                  <Link
-                    to="/register"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="block w-full py-3 text-center bg-gradient-to-r from-blue-400 to-purple-400 text-white rounded-xl hover:shadow-lg hover:shadow-blue-500/25 transition-all"
-                  >
-                    Inscription
-                  </Link>
-                </motion.div>
+                {/* Boutons de connexion */}
+                <div className="space-y-4 mt-8">
+                  {user ? (
+                    <>
+                      {user.isAdmin && (
+                        <Link
+                          to="/admin"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="block w-full py-3 text-center text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all"
+                        >
+                          Admin
+                        </Link>
+                      )}
+                      <Link
+                        to="/login"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="block w-full py-3 text-center text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all"
+                      >
+                        Connexion
+                      </Link>
+                      <Link
+                        to="/register"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="block w-full py-3 text-center bg-gradient-to-r from-blue-400 to-purple-400 text-white rounded-xl"
+                      >
+                        Inscription
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        to="/login"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="block w-full py-3 text-center text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all"
+                      >
+                        Connexion
+                      </Link>
+                      <Link
+                        to="/register"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="block w-full py-3 text-center bg-gradient-to-r from-blue-400 to-purple-400 text-white rounded-xl"
+                      >
+                        Inscription
+                      </Link>
+                    </>
+                  )}
+                </div>
               </div>
 
-              {/* Bouton de fermeture amélioré */}
+              {/* Bouton de fermeture */}
               <button
                 onClick={() => setIsMenuOpen(false)}
-                className="absolute top-6 right-4 p-2 text-white"
+                className="absolute top-4 right-4 p-2 text-white"
               >
-                <motion.div
-                  className="relative w-8 h-8"
-                  initial={false}
-                  animate={isMenuOpen ? "open" : "closed"}
-                >
-                  <motion.span
-                    className="absolute w-8 h-0.5 bg-current transform rotate-45"
-                    style={{ top: "50%" }}
-                  />
-                  <motion.span
-                    className="absolute w-8 h-0.5 bg-current transform -rotate-45"
-                    style={{ top: "50%" }}
-                  />
-                </motion.div>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
               </button>
             </motion.div>
           )}

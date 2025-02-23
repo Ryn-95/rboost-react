@@ -1,0 +1,157 @@
+{
+  "webVitals": {
+    "lcp": {
+      "threshold": 2.5,
+      "weight": 25,
+      "optimizationPriority": "high",
+      "improvements": [
+        "Image optimization",
+        "Server response time",
+        "Resource prioritization"
+      ]
+    },
+    "fid": {
+      "threshold": 100,
+      "weight": 25,
+      "optimizationPriority": "high",
+      "improvements": [
+        "JavaScript optimization",
+        "Long tasks breaking",
+        "Input handling"
+      ]
+    },
+    "cls": {
+      "threshold": 0.1,
+      "weight": 25,
+      "optimizationPriority": "medium",
+      "improvements": [
+        "Layout stability",
+        "Image dimensions",
+        "Dynamic content handling"
+      ]
+    },
+    "ttfb": {
+      "threshold": 0.8,
+      "weight": 25,
+      "optimizationPriority": "high",
+      "improvements": [
+        "Server configuration",
+        "Database optimization",
+        "Caching strategy"
+      ]
+    }
+  },
+  "resourceOptimization": {
+    "images": {
+      "formats": ["webp", "avif"],
+      "lazyLoading": true,
+      "sizeLimits": {
+        "hero": "200KB",
+        "thumbnail": "50KB",
+        "icon": "10KB"
+      },
+      "dimensions": {
+        "maxWidth": 1920,
+        "breakpoints": [375, 768, 1024, 1440]
+      }
+    },
+    "javascript": {
+      "bundling": {
+        "splitChunks": true,
+        "dynamicImports": true,
+        "treeshaking": true
+      },
+      "compression": {
+        "method": "gzip",
+        "level": 6
+      }
+    },
+    "css": {
+      "minification": true,
+      "purging": true,
+      "criticalCSS": true,
+      "mediaQueries": {
+        "mobile": "max-width: 767px",
+        "tablet": "min-width: 768px and max-width: 1023px",
+        "desktop": "min-width: 1024px"
+      }
+    }
+  },
+  "caching": {
+    "browser": {
+      "static": {
+        "maxAge": 31536000,
+        "immutable": true
+      },
+      "dynamic": {
+        "maxAge": 3600,
+        "staleWhileRevalidate": true
+      }
+    },
+    "cdn": {
+      "enabled": true,
+      "provider": "Vercel",
+      "ttl": 86400
+    }
+  },
+  "monitoring": {
+    "realUserMonitoring": {
+      "enabled": true,
+      "sampleRate": 100,
+      "metrics": [
+        "navigation-timing",
+        "resource-timing",
+        "error-tracking",
+        "user-timing"
+      ]
+    },
+    "syntheticMonitoring": {
+      "frequency": "15m",
+      "locations": ["Paris", "London", "New York"],
+      "scenarios": [
+        "homepage-load",
+        "contact-form-submission",
+        "service-page-navigation"
+      ]
+    },
+    "errorTracking": {
+      "enabled": true,
+      "sampleRate": 100,
+      "ignoredErrors": [
+        "ResizeObserver loop limit exceeded",
+        "Script error."
+      ]
+    }
+  },
+  "optimization": {
+    "automated": {
+      "imageOptimization": true,
+      "codeMinification": true,
+      "dependencyUpdates": true
+    },
+    "suggestions": {
+      "enabled": true,
+      "threshold": "medium",
+      "categories": [
+        "performance",
+        "accessibility",
+        "best-practices",
+        "seo"
+      ]
+    }
+  },
+  "reporting": {
+    "frequency": "weekly",
+    "metrics": [
+      "performance-score",
+      "accessibility-score",
+      "best-practices-score",
+      "seo-score"
+    ],
+    "alerts": {
+      "performanceDrop": true,
+      "errorSpike": true,
+      "availabilityIssues": true
+    }
+  }
+} 

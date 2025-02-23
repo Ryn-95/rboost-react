@@ -1,0 +1,81 @@
+{
+  "aria": {
+    "landmarks": {
+      "navigation": "Navigation principale",
+      "main": "Contenu principal",
+      "complementary": "Contenu complémentaire",
+      "contentinfo": "Pied de page"
+    },
+    "roles": {
+      "button": ["submit", "menu", "close"],
+      "link": ["external", "internal", "download"],
+      "region": ["search", "alert", "status"]
+    }
+  },
+  "keyboard": {
+    "focusableElements": [
+      "a[href]",
+      "button:not([disabled])",
+      "input:not([disabled])",
+      "select:not([disabled])",
+      "textarea:not([disabled])",
+      "[tabindex]:not([tabindex='-1'])"
+    ],
+    "skipLinks": [
+      {
+        "id": "skip-to-main",
+        "target": "#main-content",
+        "text": "Aller au contenu principal"
+      },
+      {
+        "id": "skip-to-nav",
+        "target": "#main-nav",
+        "text": "Aller à la navigation"
+      }
+    ]
+  },
+  "media": {
+    "images": {
+      "requiredAttributes": ["alt", "loading"],
+      "decorativePattern": "^decorative-",
+      "lazyLoadThreshold": "200px"
+    },
+    "video": {
+      "requiredAttributes": ["controls", "preload"],
+      "captionsRequired": true,
+      "autoplayAllowed": false
+    }
+  },
+  "contrast": {
+    "minimumRatio": {
+      "normal": 4.5,
+      "large": 3
+    },
+    "colorPairs": {
+      "primary": {
+        "background": "#1a1a2e",
+        "text": "#ffffff"
+      },
+      "secondary": {
+        "background": "#ffffff",
+        "text": "#1a1a2e"
+      }
+    }
+  },
+  "language": {
+    "default": "fr-FR",
+    "alternatives": ["fr-CA", "fr-BE"],
+    "directionality": "ltr"
+  },
+  "animations": {
+    "reducedMotion": {
+      "enabled": true,
+      "threshold": "slow"
+    },
+    "allowedDuration": {
+      "fast": 200,
+      "medium": 400,
+      "slow": 600
+    }
+  }
+} 

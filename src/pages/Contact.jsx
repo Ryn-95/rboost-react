@@ -1,18 +1,46 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import api from '../api/config';
+import Swal from 'sweetalert2';
+import SEO from '../components/SEO';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     subject: '',
     message: '',
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Gérer la soumission du formulaire ici
-    console.log('Form submitted:', formData);
+    try {
+      const response = await api.post('/contacts', formData);
+      if (response.status === 201) {
+        Swal.fire({
+          title: 'Succès !',
+          text: 'Votre message a été envoyé avec succès. Vous recevrez une confirmation par email.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          subject: '',
+          message: ''
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: 'Erreur !',
+        text: 'Une erreur est survenue lors de l\'envoi du message',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+      console.error('Erreur lors de l\'envoi du message:', error);
+    }
   };
 
   const handleChange = (e) => {
@@ -23,7 +51,14 @@ const Contact = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-[#1a1a2e] text-white">
+      <SEO 
+        title="Contactez RBoost Digital | Agence Web & Marketing Digital"
+        description="Contactez notre équipe d'experts pour discuter de votre projet web ou marketing digital. Devis gratuit et réponse rapide garantie."
+        keywords="contact agence web, devis site internet, contact marketing digital, agence digitale paris"
+        url="/contact"
+      />
+      
       {/* Hero Section */}
       <section className="relative min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black py-32 overflow-hidden">
         <div className="particles">
@@ -108,6 +143,22 @@ const Contact = () => {
                     required
                     className="w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                     placeholder="exemple@email.com"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-2">
+                    Numéro de téléphone
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                    placeholder="+33 6 12 34 56 78"
                   />
                 </div>
 
@@ -228,7 +279,7 @@ const Contact = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

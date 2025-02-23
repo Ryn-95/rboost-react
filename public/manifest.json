@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "RBoost Digital",
+  "name": "RBoost Digital - Agence Web & Marketing Digital",
+  "description": "Agence web spécialisée dans la création de sites web, le référencement SEO, la publicité en ligne et le marketing digital.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,16 +11,45 @@
     {
       "src": "logo192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any maskable"
     },
     {
       "src": "logo512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#1a1a2e",
+  "background_color": "#1a1a2e",
+  "orientation": "portrait",
+  "categories": ["business", "web development", "marketing"],
+  "screenshots": [
+    {
+      "src": "screenshot1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Page d'accueil de RBoost Digital"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nos Services",
+      "url": "/services",
+      "description": "Découvrez nos services web et marketing"
+    },
+    {
+      "name": "Contact",
+      "url": "/contact",
+      "description": "Contactez notre équipe"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "scope": "/",
+  "lang": "fr-FR"
 }

@@ -1,0 +1,106 @@
+{
+  "analytics": {
+    "google": {
+      "enabled": true,
+      "trackingId": "G-XXXXXXXXXX",
+      "anonymizeIp": true,
+      "respectDNT": true,
+      "customDimensions": [
+        {
+          "name": "userType",
+          "index": 1
+        },
+        {
+          "name": "pageCategory",
+          "index": 2
+        }
+      ]
+    },
+    "customEvents": [
+      {
+        "name": "formSubmission",
+        "category": "Engagement",
+        "parameters": ["formId", "formType", "success"]
+      },
+      {
+        "name": "serviceView",
+        "category": "Content",
+        "parameters": ["serviceId", "serviceName", "duration"]
+      }
+    ]
+  },
+  "performance": {
+    "metrics": {
+      "fcp": {
+        "threshold": 2000,
+        "weight": 25
+      },
+      "lcp": {
+        "threshold": 2500,
+        "weight": 30
+      },
+      "fid": {
+        "threshold": 100,
+        "weight": 25
+      },
+      "cls": {
+        "threshold": 0.1,
+        "weight": 20
+      }
+    },
+    "monitoring": {
+      "interval": 60000,
+      "sampleRate": 0.1,
+      "errorThreshold": 5
+    }
+  },
+  "errorTracking": {
+    "enabled": true,
+    "sampleRate": 1.0,
+    "ignorePatterns": [
+      "^Network error",
+      "^Script error",
+      ".*AdBlock.*"
+    ],
+    "contextData": [
+      "url",
+      "userAgent",
+      "timestamp",
+      "sessionId"
+    ]
+  },
+  "logging": {
+    "levels": {
+      "error": true,
+      "warn": true,
+      "info": true,
+      "debug": false
+    },
+    "storage": {
+      "type": "localStorage",
+      "maxEntries": 1000,
+      "retentionDays": 7
+    }
+  },
+  "userFeedback": {
+    "enabled": true,
+    "triggers": {
+      "timeOnSite": 300,
+      "scrollDepth": 0.7,
+      "interactions": 5
+    },
+    "questions": [
+      {
+        "id": "satisfaction",
+        "type": "rating",
+        "scale": 5,
+        "text": "Êtes-vous satisfait de votre visite ?"
+      },
+      {
+        "id": "improvement",
+        "type": "text",
+        "text": "Comment pouvons-nous nous améliorer ?"
+      }
+    ]
+  }
+} 

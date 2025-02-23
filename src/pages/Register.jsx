@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import api from '../api/config';
+import Swal from 'sweetalert2';
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -10,11 +13,55 @@ const Register = () => {
     password: '',
     confirmPassword: '',
   });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Gérer la soumission du formulaire ici
-    console.log('Form submitted:', formData);
+    
+    if (formData.password !== formData.confirmPassword) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Les mots de passe ne correspondent pas',
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await api.post('/auth/register', {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password
+      });
+
+      if (response.data.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Inscription réussie !',
+          text: 'Vous allez être redirigé vers la page de connexion...',
+          timer: 1500,
+          showConfirmButton: false
+        });
+
+        setTimeout(() => {
+          navigate('/login');
+        }, 1500);
+      }
+    } catch (error) {
+      console.error('Erreur d\'inscription:', error);
+      
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur d\'inscription',
+        text: error.response?.data?.message || 'Une erreur est survenue lors de l\'inscription',
+        confirmButtonText: 'Réessayer'
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -159,9 +206,10 @@ const Register = () => {
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-emerald-600 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-700 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-300 transform hover:scale-105"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-blue-600 to-emerald-600 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-700 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                S'inscrire
+                {loading ? 'Inscription en cours...' : 'S\'inscrire'}
               </button>
 
               <div className="text-center mt-6">

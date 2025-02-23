@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import SEO from '../components/SEO';
 
 const FAQ = () => {
   const [openQuestion, setOpenQuestion] = useState(null);
@@ -38,6 +39,13 @@ const FAQ = () => {
 
   return (
     <>
+      <SEO 
+        title="FAQ - Questions Fréquentes | RBoost Digital"
+        description="Trouvez les réponses à vos questions sur nos services web et marketing digital. Tout ce que vous devez savoir sur notre processus et nos solutions."
+        keywords="faq agence web, questions fréquentes, aide site internet, support marketing digital"
+        url="/faq"
+      />
+
       {/* Hero Section */}
       <section className="relative min-h-[40vh] bg-gradient-to-b from-gray-900 via-gray-800 to-black py-32 overflow-hidden">
         <div className="particles">

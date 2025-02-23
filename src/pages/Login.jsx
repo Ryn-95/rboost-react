@@ -1,17 +1,63 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import api from '../api/config';
+import Swal from 'sweetalert2';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Gérer la soumission du formulaire ici
-    console.log('Form submitted:', formData);
+    setLoading(true);
+
+    try {
+      const response = await api.post('/auth/login', formData);
+      
+      if (response.data.success) {
+        console.log('Données utilisateur reçues:', response.data.user);
+        // Mettre à jour le contexte d'authentification
+        login(response.data.user, response.data.token);
+
+        // Afficher un message de succès
+        Swal.fire({
+          icon: 'success',
+          title: 'Connexion réussie !',
+          text: 'Vous allez être redirigé...',
+          timer: 1500,
+          showConfirmButton: false
+        });
+
+        // Rediriger vers le tableau de bord si admin, sinon vers la page d'accueil
+        setTimeout(() => {
+          if (response.data.user.isAdmin) {
+            console.log('Utilisateur admin détecté, redirection vers /admin');
+            navigate('/admin');
+          } else {
+            console.log('Utilisateur non-admin, redirection vers /');
+            navigate('/');
+          }
+        }, 1500);
+      }
+    } catch (error) {
+      console.error('Erreur de connexion:', error);
+      
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur de connexion',
+        text: error.response?.data?.message || 'Une erreur est survenue lors de la connexion',
+        confirmButtonText: 'Réessayer'
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -110,9 +156,20 @@ const Login = () => {
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-emerald-600 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-700 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-300 transform hover:scale-105"
+                disabled={loading}
+                className={`w-full bg-gradient-to-r from-blue-600 to-emerald-600 text-white px-6 py-3 rounded-lg font-medium 
+                  ${loading ? 'opacity-75 cursor-not-allowed' : 'hover:from-blue-700 hover:to-emerald-700 transform hover:scale-105'}
+                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 
+                  transition-all duration-300`}
               >
-                Se connecter
+                {loading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="w-5 h-5 border-t-2 border-b-2 border-white rounded-full animate-spin mr-2"></div>
+                    Connexion en cours...
+                  </div>
+                ) : (
+                  'Se connecter'
+                )}
               </button>
 
               <div className="text-center mt-6">

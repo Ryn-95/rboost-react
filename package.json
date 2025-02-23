@@ -5,21 +5,36 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "node server/server.js",
+    "dev:all": "concurrently \"npm run dev\" \"npm run server\"",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "vercel-build": "vite build"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.19",
     "@heroicons/react": "^2.2.0",
+    "axios": "^1.7.9",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-validator": "^7.2.1",
     "framer-motion": "^11.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.10.1",
+    "nodemailer": "^6.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
     "react-router-dom": "^6.29.0",
     "sweetalert2": "^11.17.2"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.17",
+    "concurrently": "^9.1.2",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "vite": "^5.1.0"

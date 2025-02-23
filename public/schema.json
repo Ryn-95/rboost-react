@@ -1,0 +1,70 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://rboost-react-ryns-projects-df7e5921.vercel.app/#website",
+      "url": "https://rboost-react-ryns-projects-df7e5921.vercel.app/",
+      "name": "RBoost Digital",
+      "description": "Agence web spécialisée dans la création de sites web, le référencement SEO et le marketing digital",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://rboost-react-ryns-projects-df7e5921.vercel.app/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://rboost-react-ryns-projects-df7e5921.vercel.app/#organization",
+      "name": "RBoost Digital",
+      "url": "https://rboost-react-ryns-projects-df7e5921.vercel.app/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://rboost-react-ryns-projects-df7e5921.vercel.app/logo512.png"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+33-767981273",
+        "contactType": "customer service",
+        "availableLanguage": ["French"]
+      },
+      "sameAs": [
+        "https://facebook.com/rboostdigital",
+        "https://twitter.com/rboostdigital",
+        "https://instagram.com/rboostdigital",
+        "https://linkedin.com/company/rboostdigital"
+      ]
+    },
+    {
+      "@type": "Service",
+      "name": "Création de Sites Web",
+      "description": "Conception et développement de sites web professionnels et responsifs",
+      "provider": {
+        "@id": "https://rboost-react-ryns-projects-df7e5921.vercel.app/#organization"
+      },
+      "areaServed": "FR",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Services Web",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Site Vitrine",
+              "description": "Site web professionnel pour présenter votre entreprise"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "E-commerce",
+              "description": "Boutique en ligne complète et sécurisée"
+            }
+          }
+        ]
+      }
+    }
+  ]
+} 

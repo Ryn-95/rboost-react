@@ -1,0 +1,67 @@
+{
+  "caching": {
+    "static": {
+      "maxAge": 31536000,
+      "files": ["*.css", "*.js", "*.jpg", "*.png", "*.svg", "*.woff2"]
+    },
+    "dynamic": {
+      "maxAge": 3600,
+      "files": ["*.html", "*.json"]
+    }
+  },
+  "preload": [
+    {
+      "url": "/fonts/main.woff2",
+      "as": "font",
+      "type": "font/woff2",
+      "crossorigin": "anonymous"
+    },
+    {
+      "url": "/css/critical.css",
+      "as": "style"
+    },
+    {
+      "url": "/js/main.js",
+      "as": "script"
+    }
+  ],
+  "prefetch": [
+    "/images/hero-bg.jpg",
+    "/images/services-bg.jpg",
+    "/fonts/secondary.woff2"
+  ],
+  "preconnect": [
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://www.google-analytics.com"
+  ],
+  "compression": {
+    "enable": true,
+    "level": 6,
+    "types": [
+      "text/html",
+      "text/css",
+      "application/javascript",
+      "application/json",
+      "image/svg+xml"
+    ]
+  },
+  "imageOptimization": {
+    "formats": ["webp", "avif"],
+    "quality": 85,
+    "sizes": [
+      {
+        "width": 640,
+        "suffix": "-sm"
+      },
+      {
+        "width": 1024,
+        "suffix": "-md"
+      },
+      {
+        "width": 1920,
+        "suffix": "-lg"
+      }
+    ]
+  }
+} 

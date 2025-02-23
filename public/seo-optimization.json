@@ -1,0 +1,161 @@
+{
+  "priorityKeywords": {
+    "primary": [
+      "agence web paris",
+      "création site internet professionnel",
+      "agence marketing digital",
+      "référencement naturel seo",
+      "développement web sur mesure"
+    ],
+    "secondary": [
+      "agence digitale paris",
+      "création site e-commerce",
+      "stratégie marketing digital",
+      "optimisation seo",
+      "web design responsive"
+    ],
+    "local": [
+      "agence web île-de-france",
+      "création site internet paris",
+      "agence digitale paris",
+      "référencement local paris",
+      "développeur web paris"
+    ]
+  },
+  "contentOptimization": {
+    "titleFormat": {
+      "home": "{keyword} | RBoost Digital",
+      "service": "{serviceName} - {keyword} | RBoost Digital",
+      "blog": "{articleTitle} - {keyword} | RBoost Digital"
+    },
+    "metaDescriptionLength": {
+      "min": 120,
+      "max": 155,
+      "optimal": 145
+    },
+    "headingStructure": {
+      "h1": {
+        "maxPerPage": 1,
+        "format": "{primaryKeyword} - {secondaryKeyword}"
+      },
+      "h2": {
+        "maxPerSection": 1,
+        "format": "{subKeyword} | {benefit}"
+      }
+    },
+    "contentGuidelines": {
+      "minWordsPerPage": 800,
+      "optimalWordsPerPage": 1500,
+      "keywordDensity": {
+        "primary": 2.5,
+        "secondary": 1.5,
+        "total": 5
+      }
+    }
+  },
+  "technicalSEO": {
+    "loadSpeed": {
+      "maxLoadTime": 3,
+      "maxInteractiveTime": 2.5,
+      "maxFirstContentfulPaint": 1.8
+    },
+    "mobileOptimization": {
+      "priority": "mobile-first",
+      "viewport": "width=device-width, initial-scale=1",
+      "touchTargets": {
+        "minSize": 48,
+        "minSpacing": 8
+      }
+    },
+    "urlStructure": {
+      "format": "https://rboost-react-ryns-projects-df7e5921.vercel.app/{category}/{slug}",
+      "maxLength": 75,
+      "wordSeparator": "-",
+      "lowercase": true
+    }
+  },
+  "linkBuilding": {
+    "internalLinking": {
+      "minLinksPerPage": 3,
+      "maxLinksPerPage": 15,
+      "anchorTextVariations": [
+        "exact match",
+        "branded",
+        "natural",
+        "generic"
+      ]
+    },
+    "externalLinking": {
+      "authorityThreshold": 40,
+      "trustThreshold": 35,
+      "relevanceScore": 0.8
+    }
+  },
+  "localSEO": {
+    "googleMyBusiness": {
+      "name": "RBoost Digital",
+      "categories": [
+        "Agence web",
+        "Agence marketing digital",
+        "Consultant SEO"
+      ],
+      "attributes": [
+        "Service client professionnel",
+        "Devis gratuit",
+        "Expertise reconnue"
+      ]
+    },
+    "localCitations": {
+      "priority": [
+        "Pages Jaunes",
+        "LinkedIn Business",
+        "Google Maps",
+        "Yelp"
+      ],
+      "nap": {
+        "name": "RBoost Digital",
+        "address": "123 Avenue des Champs-Élysées, 75008 Paris",
+        "phone": "+33 7 67 98 12 73"
+      }
+    }
+  },
+  "richSnippets": {
+    "organization": {
+      "type": "ProfessionalService",
+      "subtype": "WebDesignCompany",
+      "services": [
+        "Web Development",
+        "SEO",
+        "Digital Marketing"
+      ]
+    },
+    "breadcrumbs": true,
+    "faq": true,
+    "reviews": true,
+    "services": true
+  },
+  "monitoring": {
+    "rankTracking": {
+      "checkFrequency": "daily",
+      "locations": [
+        "Paris",
+        "Île-de-France",
+        "France"
+      ],
+      "devices": [
+        "mobile",
+        "desktop"
+      ]
+    },
+    "competitorAnalysis": {
+      "trackCompetitors": true,
+      "updateFrequency": "weekly",
+      "metrics": [
+        "rankings",
+        "backlinks",
+        "content",
+        "social"
+      ]
+    }
+  }
+} 

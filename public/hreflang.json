@@ -1,0 +1,17 @@
+{
+  "default": "fr-FR",
+  "alternates": [
+    {
+      "hreflang": "fr-FR",
+      "href": "https://rboost-react-ryns-projects-df7e5921.vercel.app"
+    },
+    {
+      "hreflang": "fr-CA",
+      "href": "https://rboost-react-ryns-projects-df7e5921.vercel.app/ca"
+    },
+    {
+      "hreflang": "fr-BE",
+      "href": "https://rboost-react-ryns-projects-df7e5921.vercel.app/be"
+    }
+  ]
+} 

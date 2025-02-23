@@ -1,0 +1,97 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://rboost-react-ryns-projects-df7e5921.vercel.app/#business",
+      "name": "RBoost Digital",
+      "image": "https://rboost-react-ryns-projects-df7e5921.vercel.app/logo512.png",
+      "priceRange": "€€",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "123 Avenue des Champs-Élysées",
+        "addressLocality": "Paris",
+        "postalCode": "75008",
+        "addressCountry": "FR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "48.8566",
+        "longitude": "2.3522"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "18:00"
+        }
+      ],
+      "telephone": "+33-767981273",
+      "email": "contact@rboost-digital.com"
+    },
+    {
+      "@type": "ProfessionalService",
+      "name": "Services Web RBoost",
+      "serviceType": "Web Development",
+      "areaServed": {
+        "@type": "Country",
+        "name": "France"
+      },
+      "provider": {
+        "@id": "https://rboost-react-ryns-projects-df7e5921.vercel.app/#business"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Services Web",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Développement Web",
+              "description": "Création de sites web professionnels et applications web sur mesure"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "SEO",
+              "description": "Optimisation pour les moteurs de recherche et amélioration du classement"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Marketing Digital",
+              "description": "Stratégies de marketing digital complètes et campagnes publicitaires"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Combien coûte un site web professionnel ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le coût varie selon vos besoins spécifiques. Nous proposons des solutions à partir de 2000€."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Combien de temps faut-il pour créer un site web ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En général, un site web prend entre 4 et 8 semaines selon la complexité du projet."
+          }
+        }
+      ]
+    }
+  ]
+} 
