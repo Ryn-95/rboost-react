@@ -27,12 +27,12 @@ const app = express();
 
 // Configuration CORS avec support des cookies
 const corsOptions = {
-    origin: process.env.NODE_ENV === 'development' 
-        ? 'http://localhost:3000'
-        : process.env.WEBSITE_URL,
+    origin: process.env.NODE_ENV === 'production'
+        ? ['https://rboost-react-ryns-projects-df7e5921.vercel.app', 'https://rboost-react.vercel.app']
+        : 'http://localhost:3000',
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 };
 
 // Middleware
