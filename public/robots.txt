@@ -6,10 +6,10 @@ Disallow: /login
 Disallow: /register
 
 # Sitemap
-Sitemap: https://rboost-react-ryns-projects-df7e5921.vercel.app/sitemap.xml
+Sitemap: https://rboost-react.vercel.app/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 10
 
 # Host
-Host: https://rboost-react-ryns-projects-df7e5921.vercel.app
+Host: https://rboost-react.vercel.app
