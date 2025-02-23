@@ -5,6 +5,8 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: 'dist',
+    assetsDir: 'assets',
+    emptyOutDir: true,
     rollupOptions: {
       output: {
         manualChunks: undefined
@@ -13,11 +15,11 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    open: true,
     proxy: {
       '/api': {
         target: 'http://localhost:5001',
-        changeOrigin: true
+        changeOrigin: true,
+        secure: false
       }
     }
   }
