@@ -16,12 +16,13 @@ const router = express.Router();
 
 // Configuration de Nodemailer
 const transporter = nodemailer.createTransport({
+    service: 'gmail',
     host: 'smtp.gmail.com',
     port: 587,
     secure: false,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD
+        user: 'rdigitaall@gmail.com',
+        pass: 'togjsbezckzsfrsy'
     },
     tls: {
         rejectUnauthorized: false
@@ -90,7 +91,7 @@ router.post('/', validateContact, async (req, res) => {
                 <p><strong>Sujet:</strong> ${req.body.subject}</p>
                 <p><strong>Message:</strong></p>
                 <p>${req.body.message}</p>
-                <p><a href="https://rboost-react-ryns-projects-df7e5921.vercel.app/admin/messages">Voir tous les messages</a></p>
+                <p><a href="https://rboost-react-65clukrdbnui3xoysum1dthxzcob.vercel.app/admin/messages">Voir tous les messages</a></p>
             `
         };
 
