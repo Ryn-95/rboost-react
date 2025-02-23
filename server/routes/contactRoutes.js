@@ -16,11 +16,18 @@ const router = express.Router();
 
 // Configuration de Nodemailer
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
         user: process.env.EMAIL_USER || 'rdigitaall@gmail.com',
         pass: process.env.EMAIL_PASSWORD || 'togjsbezckzsfrsy'
-    }
+    },
+    tls: {
+        rejectUnauthorized: false
+    },
+    debug: true,
+    logger: true
 });
 
 // Vérification de la configuration email
@@ -29,6 +36,11 @@ transporter.verify((error, success) => {
         console.error('Erreur de configuration email:', error);
     } else {
         console.log('Serveur SMTP prêt à envoyer des emails');
+        console.log('Configuration utilisée:', {
+            user: process.env.EMAIL_USER || 'rdigitaall@gmail.com',
+            host: 'smtp.gmail.com',
+            port: 465
+        });
     }
 });
 
@@ -75,7 +87,7 @@ router.post('/', validateContact, async (req, res) => {
 
         // Email de notification pour l'admin
         const adminMailOptions = {
-            from: process.env.EMAIL_USER || 'rdigitaall@gmail.com',
+            from: `"RBoost Contact Form" <${process.env.EMAIL_USER || 'rdigitaall@gmail.com'}>`,
             to: process.env.ADMIN_EMAIL || 'rdigitaall@gmail.com',
             subject: `Nouveau message de ${req.body.name} - ${req.body.subject}`,
             html: `
@@ -92,7 +104,7 @@ router.post('/', validateContact, async (req, res) => {
 
         // Email de confirmation pour l'expéditeur
         const userMailOptions = {
-            from: process.env.EMAIL_USER || 'rdigitaall@gmail.com',
+            from: `"RBoost Digital" <${process.env.EMAIL_USER || 'rdigitaall@gmail.com'}>`,
             to: req.body.email,
             subject: 'Confirmation de réception de votre message',
             html: `
