@@ -14,14 +14,19 @@ dotenv.config({ path: join(__dirname, '../..', '.env') });
 
 const router = express.Router();
 
-// Configuration de Nodemailer
+// Configuration de Nodemailer avec vérification stricte
+const EMAIL_CONFIG = {
+    user: 'rdigitaall@gmail.com',
+    pass: 'togjsbezckzsfrsy'
+};
+
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
     secure: true,
     auth: {
-        user: 'rdigitaall@gmail.com',
-        pass: 'togjsbezckzsfrsy'
+        user: EMAIL_CONFIG.user,
+        pass: EMAIL_CONFIG.pass
     },
     tls: {
         rejectUnauthorized: false
@@ -37,7 +42,7 @@ transporter.verify((error, success) => {
     } else {
         console.log('Serveur SMTP prêt à envoyer des emails');
         console.log('Configuration utilisée:', {
-            user: 'rdigitaall@gmail.com',
+            user: EMAIL_CONFIG.user,
             host: 'smtp.gmail.com',
             port: 465
         });
@@ -85,10 +90,13 @@ router.post('/', validateContact, async (req, res) => {
             ? 'https://rboost-react-65clukrdbnui3xoysum1dthxzcob.vercel.app'
             : 'http://localhost:3000';
 
-        // Email de notification pour l'admin
+        // Email de notification pour l'admin avec vérification stricte
         const adminMailOptions = {
-            from: 'RBoost Contact Form <rdigitaall@gmail.com>',
-            to: 'rdigitaall@gmail.com',
+            from: {
+                name: 'RBoost Contact Form',
+                address: EMAIL_CONFIG.user
+            },
+            to: EMAIL_CONFIG.user,
             subject: `Nouveau message de ${req.body.name} - ${req.body.subject}`,
             html: `
                 <h2>Nouveau message reçu</h2>
@@ -102,9 +110,12 @@ router.post('/', validateContact, async (req, res) => {
             `
         };
 
-        // Email de confirmation pour l'expéditeur
+        // Email de confirmation pour l'expéditeur avec vérification stricte
         const userMailOptions = {
-            from: 'RBoost Digital <rdigitaall@gmail.com>',
+            from: {
+                name: 'RBoost Digital',
+                address: EMAIL_CONFIG.user
+            },
             to: req.body.email,
             subject: 'Confirmation de réception de votre message',
             html: `
