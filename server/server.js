@@ -27,9 +27,19 @@ const app = express();
 
 // Configuration CORS avec support des cookies
 const corsOptions = {
-    origin: process.env.NODE_ENV === 'production'
-        ? ['https://rboost-react-ryns-projects-df7e5921.vercel.app', 'https://rboost-react.vercel.app']
-        : 'http://localhost:3000',
+    origin: function(origin, callback) {
+        const allowedOrigins = [
+            'http://localhost:3000',
+            'https://rboost-react.vercel.app',
+            'https://rboost-react-ryns-projects-df7e5921.vercel.app'
+        ];
+        
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Non autorisé par CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
@@ -40,6 +50,12 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
+// Middleware de logging
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
+    next();
+});
+
 // Routes publiques
 app.use('/api/contacts', contactRoutes);
 app.use('/api/auth', authRoutes);
@@ -47,6 +63,15 @@ app.use('/api/auth', authRoutes);
 // Routes protégées par l'authentification
 app.use('/api/admin', authMiddleware);
 app.use('/api/admin/messages', authMiddleware);
+
+// Gestion globale des erreurs
+app.use((err, req, res, next) => {
+    console.error('Erreur serveur:', err);
+    res.status(err.status || 500).json({
+        message: err.message || 'Une erreur est survenue sur le serveur',
+        error: process.env.NODE_ENV === 'development' ? err : {}
+    });
+});
 
 // Connexion à MongoDB
 mongoose.connect(process.env.MONGODB_URI)
