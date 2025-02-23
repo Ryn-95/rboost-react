@@ -17,19 +17,12 @@
     {
       "src": "/api/(.*)",
       "headers": {
-        "Access-Control-Allow-Origin": "https://rboost-react-ryns-projects-df7e5921.vercel.app",
+        "Access-Control-Allow-Origin": "https://rboost-react-65clukrdbnui3xoysum1dthxzcob.vercel.app",
         "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-        "Access-Control-Allow-Headers": "X-Requested-With,Content-Type,Accept,Authorization",
+        "Access-Control-Allow-Headers": "X-Requested-With,Content-Type,Accept",
         "Access-Control-Allow-Credentials": "true"
       },
-      "continue": true
-    },
-    {
-      "src": "/api/(.*)",
       "dest": "/server/server.js"
-    },
-    {
-      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
@@ -43,6 +36,6 @@
     "EMAIL_USER": "@email_user",
     "EMAIL_PASSWORD": "@email_password",
     "ADMIN_EMAIL": "@admin_email",
-    "WEBSITE_URL": "https://rboost-react-ryns-projects-df7e5921.vercel.app"
+    "WEBSITE_URL": "https://rboost-react-65clukrdbnui3xoysum1dthxzcob.vercel.app"
   }
 } 

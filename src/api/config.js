@@ -3,7 +3,7 @@ import axios from 'axios';
 const api = axios.create({
     baseURL: import.meta.env.MODE === 'development' 
         ? 'http://localhost:5001/api'
-        : 'https://rboost-react.vercel.app/api',
+        : 'https://rboost-react-65clukrdbnui3xoysum1dthxzcob.vercel.app/api',
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'

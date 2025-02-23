@@ -18,32 +18,22 @@ dotenv.config({ path: join(__dirname, '..', '.env') });
 // Configuration de base de l'application
 const app = express();
 
-// Configuration CORS
-const allowedOrigins = [
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'https://rboost-react.vercel.app',
-    'https://rboost-react-ryns-projects-df7e5921.vercel.app'
-];
-
+// Configuration CORS simplifiée
 app.use(cors({
-    origin: function(origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Non autorisé par CORS'));
-        }
-    },
-    credentials: true
+    origin: 'https://rboost-react-65clukrdbnui3xoysum1dthxzcob.vercel.app',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 
 // Middleware de base
 app.use(express.json());
 app.use(cookieParser());
 
-// Middleware de logging
+// Middleware de logging amélioré
 app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    console.log('Headers:', req.headers);
+    console.log('Body:', req.body);
     next();
 });
 
