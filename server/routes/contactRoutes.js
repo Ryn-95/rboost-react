@@ -15,37 +15,20 @@ dotenv.config({ path: join(__dirname, '../..', '.env') });
 const router = express.Router();
 
 // Configuration de Nodemailer avec vérification stricte
-const EMAIL_CONFIG = {
-    user: 'rdigitaall@gmail.com',
-    pass: 'togjsbezckzsfrsy'
-};
-
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
+    service: 'gmail',
     auth: {
-        user: EMAIL_CONFIG.user,
-        pass: EMAIL_CONFIG.pass
-    },
-    tls: {
-        rejectUnauthorized: false
-    },
-    debug: true,
-    logger: true
+        user: 'rdigitaall@gmail.com',
+        pass: 'togjsbezckzsfrsy'
+    }
 });
 
 // Vérification de la configuration email
-transporter.verify((error, success) => {
+transporter.verify(function(error, success) {
     if (error) {
         console.error('Erreur de configuration email:', error);
     } else {
-        console.log('Serveur SMTP prêt à envoyer des emails');
-        console.log('Configuration utilisée:', {
-            user: EMAIL_CONFIG.user,
-            host: 'smtp.gmail.com',
-            port: 465
-        });
+        console.log('Serveur email prêt');
     }
 });
 
@@ -66,7 +49,6 @@ router.post('/', validateContact, async (req, res) => {
         // Vérification des erreurs de validation
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            console.log('Erreurs de validation:', errors.array());
             return res.status(400).json({ 
                 success: false,
                 message: 'Erreurs de validation',
@@ -82,21 +64,16 @@ router.post('/', validateContact, async (req, res) => {
             message: req.body.message
         });
 
-        console.log('Contact à sauvegarder:', contact);
         const savedContact = await contact.save();
-        console.log('Contact sauvegardé avec succès:', savedContact);
 
         const siteUrl = process.env.NODE_ENV === 'production' 
             ? 'https://rboost-react-65clukrdbnui3xoysum1dthxzcob.vercel.app'
             : 'http://localhost:3000';
 
-        // Email de notification pour l'admin avec vérification stricte
-        const adminMailOptions = {
-            from: {
-                name: 'RBoost Contact Form',
-                address: EMAIL_CONFIG.user
-            },
-            to: EMAIL_CONFIG.user,
+        // Email de notification pour l'admin
+        const adminMail = {
+            from: 'rdigitaall@gmail.com',
+            to: 'rdigitaall@gmail.com',
             subject: `Nouveau message de ${req.body.name} - ${req.body.subject}`,
             html: `
                 <h2>Nouveau message reçu</h2>
@@ -110,12 +87,9 @@ router.post('/', validateContact, async (req, res) => {
             `
         };
 
-        // Email de confirmation pour l'expéditeur avec vérification stricte
-        const userMailOptions = {
-            from: {
-                name: 'RBoost Digital',
-                address: EMAIL_CONFIG.user
-            },
+        // Email de confirmation pour l'utilisateur
+        const userMail = {
+            from: 'rdigitaall@gmail.com',
             to: req.body.email,
             subject: 'Confirmation de réception de votre message',
             html: `
@@ -134,21 +108,11 @@ router.post('/', validateContact, async (req, res) => {
             `
         };
 
-        console.log('Tentative d\'envoi d\'email à l\'admin avec les options:', adminMailOptions);
-        console.log('Tentative d\'envoi d\'email de confirmation avec les options:', userMailOptions);
-
-        // Envoi des emails avec gestion des erreurs détaillée
-        try {
-            const [adminInfo, userInfo] = await Promise.all([
-                transporter.sendMail(adminMailOptions),
-                transporter.sendMail(userMailOptions)
-            ]);
-            console.log('Email admin envoyé avec succès:', adminInfo);
-            console.log('Email de confirmation envoyé avec succès:', userInfo);
-        } catch (emailError) {
-            console.error('Erreur lors de l\'envoi des emails:', emailError);
-            // On continue malgré l'erreur d'envoi d'email
-        }
+        // Envoi des emails
+        await Promise.all([
+            transporter.sendMail(adminMail),
+            transporter.sendMail(userMail)
+        ]);
 
         res.status(201).json({
             success: true,
