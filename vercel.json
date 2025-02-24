@@ -19,34 +19,61 @@
       "headers": [
         {
           "key": "X-Robots-Tag",
-          "value": "all"
+          "value": "index,follow,all"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "index,follow,all"
+        }
+      ]
+    },
+    {
+      "source": "/robots.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "index,follow,all"
         }
       ]
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/sitemap.xml",
-      "dest": "/api/sitemap.js"
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap.js"
     },
     {
-      "src": "/robots.txt",
-      "headers": {
-        "Content-Type": "text/plain",
-        "Cache-Control": "public, max-age=3600"
-      },
-      "dest": "/robots.txt"
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
     },
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "env": {
