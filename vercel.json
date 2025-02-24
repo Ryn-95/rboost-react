@@ -20,6 +20,18 @@
         {
           "key": "X-Robots-Tag",
           "value": "index, follow"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
         }
       ]
     }
@@ -27,13 +39,18 @@
   "routes": [
     {
       "src": "/sitemap.xml",
+      "headers": {
+        "Content-Type": "application/xml",
+        "X-Robots-Tag": "index, follow"
+      },
       "dest": "/api/sitemap.js"
     },
     {
       "src": "/robots.txt",
       "headers": {
         "Content-Type": "text/plain",
-        "Cache-Control": "public, max-age=3600"
+        "Cache-Control": "public, max-age=3600",
+        "X-Robots-Tag": "index, follow"
       },
       "dest": "/robots.txt"
     },
