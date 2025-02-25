@@ -9,7 +9,7 @@
       "priceRange": "€€",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "123 Avenue des Champs-Élysées",
+        "streetAddress": "75 Avenue des Champs-Élysées",
         "addressLocality": "Paris",
         "postalCode": "75008",
         "addressCountry": "FR"
@@ -27,8 +27,8 @@
           "closes": "18:00"
         }
       ],
-      "telephone": "+33-767981273",
-      "email": "contact@rboost-digital.com"
+      "telephone": "+33605851216",
+      "email": "rdigitaall@gmail.com"
     },
     {
       "@type": "ProfessionalService",

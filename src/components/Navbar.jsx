@@ -12,10 +12,6 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   useEffect(() => {
-    console.log('État utilisateur:', user);
-  }, [user]);
-
-  useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
@@ -24,56 +20,53 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location]);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMenuOpen]);
+
   const isActive = (path) => location.pathname === path;
 
-  const megaMenuContent = {
-    services: {
-      title: "Nos Services",
-      columns: [
-        {
-          title: "Services Marketing Digital",
-          description: "Des solutions complètes pour votre présence en ligne",
-          items: [
-            { 
-              name: "Création de Site Internet", 
-              icon: "🌐", 
-              link: "/services/web", 
-              description: "Sites web professionnels et responsive",
-              price: "À partir de 999€"
-            },
-            { 
-              name: "SEO & Content Marketing", 
-              icon: "📈", 
-              link: "/services/seo", 
-              description: "Optimisation pour les moteurs de recherche",
-              price: "À partir de 799€/mois"
-            },
-            { 
-              name: "Publicité en Ligne", 
-              icon: "🎯", 
-              link: "/services/ads", 
-              description: "Campagnes Google Ads & Social Ads",
-              price: "À partir de 699€/mois"
-            },
-            { 
-              name: "Social Media Management", 
-              icon: "📱", 
-              link: "/services/social-media", 
-              description: "Gestion professionnelle de vos réseaux sociaux",
-              price: "À partir de 599€/mois"
-            },
-            { 
-              name: "Email Marketing", 
-              icon: "📧", 
-              link: "/services/email", 
-              description: "Campagnes email personnalisées et automatisées",
-              price: "À partir de 499€/mois"
-            }
-          ]
-        }
-      ]
+  const services = [
+    {
+      name: "Création de Site Internet",
+      description: "Sites web professionnels et responsive",
+      price: "À partir de 490€",
+      icon: "🚀",
+      path: "/services/web"
+    },
+    {
+      name: "SEO & Content Marketing",
+      description: "Optimisation pour les moteurs de recherche",
+      price: "À partir de 799€/mois",
+      icon: "📈",
+      path: "/services/seo"
+    },
+    {
+      name: "Publicité en Ligne",
+      description: "Campagnes Google Ads & Social Ads",
+      price: "À partir de 699€/mois",
+      icon: "🎯",
+      path: "/services/ads"
+    },
+    {
+      name: "Social Media Management",
+      description: "Gestion professionnelle de vos réseaux sociaux",
+      price: "À partir de 599€/mois",
+      icon: "📱",
+      path: "/services/social-media"
     }
-  };
+  ];
 
   const handleLogout = () => {
     logout();
@@ -85,119 +78,151 @@ const Navbar = () => {
       <nav 
         className={`fixed w-full z-50 transition-all duration-500 ${
           isScrolled 
-            ? 'bg-[#1a1a2e]/95 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] py-4' 
-            : 'bg-[#1a1a2e] py-6'
+            ? 'bg-[#1a1a2e]/80 backdrop-blur-2xl border-b border-white/5 py-3 shadow-2xl shadow-blue-500/10' 
+            : 'bg-transparent py-5'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
-            {/* Logo */}
-            <Link to="/" className="flex items-center group relative">
-              <motion.span 
-                className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              >
-                Rboost
-              </motion.span>
-              <div className="absolute -bottom-2 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 group-hover:w-full transition-all duration-300"></div>
+            {/* Logo amélioré avec effet glassmorphism */}
+            <Link to="/" className="group flex items-center space-x-4">
+              <div className="relative w-12 h-12">
+                {/* Effet de glassmorphism amélioré */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-purple-500/20 rounded-xl backdrop-blur-md" />
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 rounded-xl opacity-75"
+                  animate={{ 
+                    rotate: [0, 180],
+                    scale: [1, 1.1, 1]
+                  }}
+                  transition={{ 
+                    duration: 10,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }}
+                />
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-bl from-cyan-500 via-blue-500 to-purple-500 rounded-xl opacity-50 blur-sm"
+                  animate={{ 
+                    rotate: [180, 0],
+                    scale: [1, 1.2, 1]
+                  }}
+                  transition={{ 
+                    duration: 10,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }}
+                />
+                {/* Logo principal avec effet néon */}
+                <div className="absolute inset-0 bg-[#1a1a2e]/90 rounded-xl transform transition-all duration-300 group-hover:scale-95 flex items-center justify-center overflow-hidden">
+                  <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent transform transition-transform group-hover:scale-110 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]">
+                    R
+                  </span>
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <motion.span 
+                  className="text-xl font-semibold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  RBoost
+                </motion.span>
+                <span className="text-xs text-blue-400/60 font-light tracking-wider">Digital Agency</span>
+              </div>
             </Link>
 
-            {/* Navigation Desktop */}
+            {/* Navigation Desktop avec effet glassmorphism */}
             <div className="hidden lg:flex items-center space-x-8">
               <div className="relative group">
-                <Link
-                  to="/services"
-                  onMouseEnter={() => setActiveMenu('services')}
-                  className={`text-sm font-medium transition-all duration-300 px-6 py-2.5 rounded-full relative overflow-hidden ${
-                    isActive('/services') || activeMenu === 'services'
-                      ? 'text-white bg-gradient-to-r from-blue-400/20 to-purple-400/20 shadow-[0_0_15px_rgba(59,130,246,0.5)]' 
-                      : 'text-gray-200 hover:text-white hover:bg-white/10'
-                  }`}
-                >
-                  <span className="relative z-10">Services</span>
-                  {(isActive('/services') || activeMenu === 'services') && (
-                    <motion.div
-                      layoutId="nav-pill"
-                      className="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-purple-400/10"
-                      initial={false}
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                    />
-                  )}
-                </Link>
+                <div className="flex items-center space-x-2">
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Link 
+                      to="/services"
+                      className={`px-5 py-2.5 rounded-full transition-all duration-300 ${
+                        isActive('/services') 
+                          ? 'bg-white/10 text-white shadow-lg shadow-blue-500/10 border border-white/10 backdrop-blur-xl' 
+                          : 'text-gray-300 hover:text-white hover:bg-white/5'
+                      }`}
+                    >
+                      Services
+                    </Link>
+                  </motion.div>
+                  <motion.button
+                    onClick={() => setActiveMenu(activeMenu === 'services' ? null : 'services')}
+                    className={`p-2.5 rounded-full transition-all duration-300 ${
+                      activeMenu === 'services' 
+                        ? 'bg-white/10 text-white shadow-lg shadow-blue-500/10 border border-white/10 backdrop-blur-xl' 
+                        : 'text-gray-300 hover:text-white hover:bg-white/5'
+                    }`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <motion.svg 
+                      className="w-4 h-4"
+                      animate={{ rotate: activeMenu === 'services' ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </motion.svg>
+                  </motion.button>
+                </div>
+
+                {/* Mega Menu avec effet glassmorphism */}
                 <AnimatePresence>
                   {activeMenu === 'services' && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                      onMouseLeave={() => setActiveMenu(null)}
-                      className="absolute top-full left-1/2 transform -translate-x-1/2 mt-4 w-[500px] bg-[#1a1a2e]/95 backdrop-blur-xl rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] border border-white/10 overflow-hidden"
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="absolute left-0 right-0 mt-4 w-[600px] bg-[#1a1a2e]/90 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl shadow-blue-500/10 overflow-hidden"
                     >
                       <div className="p-6">
-                        <h3 className="text-lg font-semibold text-white mb-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                          {megaMenuContent.services.columns[0].title}
-                        </h3>
-                        <p className="text-sm text-gray-400 mb-6">
-                          {megaMenuContent.services.columns[0].description}
-                        </p>
-                        <div className="space-y-4">
-                          {megaMenuContent.services.columns[0].items.map((item, itemIdx) => (
-                            <motion.div 
-                              key={itemIdx}
-                              whileHover={{ x: 5 }}
-                              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                        <div className="grid gap-4">
+                          {services.map((service, index) => (
+                            <motion.div
+                              key={service.name}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.1 }}
+                              className="group"
                             >
                               <Link 
-                                to={item.link}
-                                className="block p-4 rounded-xl hover:bg-white/5 transition-all duration-300 group border border-white/5 hover:border-white/10"
+                                to={service.path}
+                                className="flex items-start space-x-4 p-4 rounded-xl hover:bg-white/5 transition-all duration-300 border border-white/5 hover:border-white/10 hover:shadow-lg hover:shadow-blue-500/5"
+                                onClick={() => setActiveMenu(null)}
                               >
-                                <div className="flex items-start space-x-4">
-                                  <span className="text-2xl group-hover:scale-110 transition-transform mt-1">
-                                    {item.icon}
+                                <motion.div 
+                                  className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 flex items-center justify-center backdrop-blur-xl border border-white/5"
+                                  whileHover={{ scale: 1.1, rotate: [0, 10, -10, 0] }}
+                                >
+                                  <span className="text-2xl filter drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">{service.icon}</span>
+                                </motion.div>
+                                <div className="flex-1">
+                                  <span className="block text-white font-medium group-hover:text-blue-400 transition-colors">
+                                    {service.name}
                                   </span>
-                                  <div className="flex-1">
-                                    <span className="block text-white font-medium group-hover:text-blue-400 transition-colors">
-                                      {item.name}
-                                    </span>
-                                    <span className="text-sm text-gray-400 block mt-1">
-                                      {item.description}
-                                    </span>
-                                    <span className="text-sm text-blue-400 block mt-2">
-                                      {item.price}
-                                    </span>
-                                  </div>
+                                  <span className="text-sm text-gray-400/80 block mt-1">
+                                    {service.description}
+                                  </span>
+                                  <span className="text-sm text-blue-400/90 block mt-2 font-medium bg-gradient-to-r from-blue-500/10 to-purple-500/10 px-3 py-1 rounded-full inline-block backdrop-blur-xl border border-white/5">
+                                    {service.price}
+                                  </span>
                                 </div>
+                                <motion.div 
+                                  className="flex-shrink-0 self-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                  whileHover={{ scale: 1.2 }}
+                                >
+                                  <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                                  </svg>
+                                </motion.div>
                               </Link>
                             </motion.div>
                           ))}
-                        </div>
-                      </div>
-                      <div className="bg-gradient-to-r from-blue-400/5 via-purple-400/5 to-pink-400/5 p-6 border-t border-white/5">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="text-white font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                              Besoin d'une stratégie personnalisée ?
-                            </h4>
-                            <p className="text-sm text-gray-400">
-                              Parlons de votre projet
-                            </p>
-                          </div>
-                          <Link
-                            to="/contact"
-                            className="px-6 py-2.5 bg-gradient-to-r from-blue-400 to-purple-400 text-white rounded-full font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 flex items-center space-x-2 group"
-                          >
-                            <span>Consultation gratuite</span>
-                            <svg 
-                              className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" 
-                              fill="none" 
-                              stroke="currentColor" 
-                              viewBox="0 0 24 24"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                            </svg>
-                          </Link>
                         </div>
                       </div>
                     </motion.div>
@@ -205,119 +230,78 @@ const Navbar = () => {
                 </AnimatePresence>
               </div>
 
-              <Link
-                to="/about"
-                className={`text-sm font-medium transition-all duration-300 px-6 py-2.5 rounded-full relative overflow-hidden ${
-                  isActive('/about')
-                    ? 'text-white bg-gradient-to-r from-blue-400/20 to-purple-400/20 shadow-[0_0_15px_rgba(59,130,246,0.5)]'
-                    : 'text-gray-200 hover:text-white hover:bg-white/10'
-                }`}
-              >
-                À propos
-                {isActive('/about') && (
-                  <motion.div
-                    layoutId="nav-pill"
-                    className="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-purple-400/10"
-                    initial={false}
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-              </Link>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link 
+                  to="/about" 
+                  className={`px-5 py-2.5 rounded-full transition-all duration-300 ${
+                    isActive('/about') 
+                      ? 'bg-white/10 text-white shadow-lg shadow-blue-500/10 border border-white/10 backdrop-blur-xl' 
+                      : 'text-gray-300 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  À Propos
+                </Link>
+              </motion.div>
 
-              <Link
-                to="/contact"
-                className={`text-sm font-medium transition-all duration-300 px-6 py-2.5 rounded-full relative overflow-hidden ${
-                  isActive('/contact')
-                    ? 'text-white bg-gradient-to-r from-blue-400/20 to-purple-400/20 shadow-[0_0_15px_rgba(59,130,246,0.5)]'
-                    : 'text-gray-200 hover:text-white hover:bg-white/10'
-                }`}
-              >
-                Contact
-                {isActive('/contact') && (
-                  <motion.div
-                    layoutId="nav-pill"
-                    className="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-purple-400/10"
-                    initial={false}
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-              </Link>
-            </div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link 
+                  to="/contact"
+                  className="px-6 py-2.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-full hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 border border-white/10 backdrop-blur-xl"
+                >
+                  Nous Contacter
+                </Link>
+              </motion.div>
 
-            {/* Boutons de connexion/inscription pour desktop */}
-            <div className="hidden lg:flex items-center space-x-4">
               {user ? (
                 <div className="flex items-center space-x-4">
-                  {user.isAdmin && (
-                    <Link
-                      to="/admin"
-                      className="text-sm font-medium transition-all duration-300 px-6 py-2.5 rounded-full relative overflow-hidden text-white bg-gradient-to-r from-blue-400/20 to-purple-400/20 hover:from-blue-400/30 hover:to-purple-400/30"
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Link 
+                      to="/admin" 
+                      className="px-4 py-2 rounded-full text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-300"
                     >
-                      Admin
+                      Dashboard
                     </Link>
-                  )}
-                  <button
+                  </motion.div>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={handleLogout}
-                    className="text-sm font-medium transition-all duration-300 px-6 py-2.5 rounded-full bg-red-500/20 text-red-400 hover:bg-red-500/30"
+                    className="px-4 py-2 rounded-full text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-300"
                   >
                     Déconnexion
-                  </button>
+                  </motion.button>
                 </div>
               ) : (
-                <>
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Link
-                      to="/login"
-                      className="text-sm font-medium text-gray-200 hover:text-white transition-colors px-6 py-2.5 rounded-full hover:bg-white/10"
-                    >
-                      Connexion
-                    </Link>
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Link
-                      to="/register"
-                      className="text-sm font-medium bg-gradient-to-r from-blue-400 to-purple-400 text-white px-6 py-2.5 rounded-full hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
-                    >
-                      Inscription
-                    </Link>
-                  </motion.div>
-                </>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link 
+                    to="/login"
+                    className="px-4 py-2 rounded-full text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-300"
+                  >
+                    Connexion
+                  </Link>
+                </motion.div>
               )}
             </div>
 
-            {/* Bouton menu mobile */}
+            {/* Bouton menu mobile amélioré */}
             <div className="lg:hidden">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-200 hover:text-white transition-colors"
+                className="p-2.5 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-300 border border-white/10 backdrop-blur-xl"
               >
-                <motion.div
-                  animate={isMenuOpen ? "open" : "closed"}
-                  className="w-6 h-6 flex flex-col justify-center items-center"
-                >
-                  <motion.span
-                    variants={{
-                      closed: { rotate: 0, y: 0 },
-                      open: { rotate: 45, y: 2 }
-                    }}
-                    className="w-6 h-0.5 bg-current mb-1 transform origin-center"
-                  ></motion.span>
-                  <motion.span
-                    variants={{
-                      closed: { opacity: 1 },
-                      open: { opacity: 0 }
-                    }}
-                    className="w-6 h-0.5 bg-current mb-1"
-                  ></motion.span>
-                  <motion.span
-                    variants={{
-                      closed: { rotate: 0, y: 0 },
-                      open: { rotate: -45, y: -2 }
-                    }}
-                    className="w-6 h-0.5 bg-current transform origin-center"
-                  ></motion.span>
-                </motion.div>
-              </button>
+                <span className="sr-only">{isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}</span>
+                {isMenuOpen ? (
+                  <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                )}
+              </motion.button>
             </div>
           </div>
         </div>
@@ -327,125 +311,149 @@ const Navbar = () => {
           {isMenuOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "100vh" }}
+              animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="fixed inset-0 bg-[#1a1a2e]/95 backdrop-blur-xl z-50 lg:hidden overflow-y-auto"
+              className="lg:hidden fixed inset-x-0 top-[72px] bg-[#1a1a2e]/90 backdrop-blur-2xl border-b border-white/10 overflow-hidden max-h-[calc(100vh-72px)] overflow-y-auto"
             >
-              <div className="min-h-screen flex flex-col px-4 py-20">
-                <div className="flex-1 space-y-6">
-                  {/* Services */}
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-bold text-white bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                      Nos Services
-                    </h3>
-                    <div className="grid gap-4">
-                      {megaMenuContent.services.columns[0].items.map((item, index) => (
-                        <motion.div
-                          key={item.name}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                        >
-                          <Link
-                            to={item.link}
-                            onClick={() => setIsMenuOpen(false)}
-                            className="block p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-white/10"
+              <div className="px-4 py-6 space-y-4">
+                {/* Services avec sous-menu */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Link
+                      to="/services"
+                      className={`flex-1 px-4 py-3 rounded-xl transition-all ${
+                        isActive('/services') ? 'bg-white/10 text-white border border-white/10 backdrop-blur-xl' : 'text-gray-300 hover:text-white hover:bg-white/5'
+                      }`}
+                      onClick={() => setActiveMenu(null)}
+                    >
+                      Services
+                    </Link>
+                    <motion.button
+                      onClick={() => setActiveMenu(activeMenu === 'services' ? null : 'services')}
+                      className="p-3 ml-2 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-white/10 backdrop-blur-xl"
+                      animate={{ rotate: activeMenu === 'services' ? 180 : 0 }}
+                    >
+                      <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </motion.button>
+                  </div>
+
+                  <AnimatePresence>
+                    {activeMenu === 'services' && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="space-y-2 pl-4"
+                      >
+                        {services.map((service, index) => (
+                          <motion.div
+                            key={service.name}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.1 }}
                           >
-                            <div className="flex items-center space-x-3">
-                              <span className="text-2xl">{item.icon}</span>
-                              <div>
-                                <span className="block font-medium text-white">{item.name}</span>
-                                <span className="text-sm text-gray-400">{item.description}</span>
+                            <Link
+                              to={service.path}
+                              className="flex items-center p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-white/10 backdrop-blur-xl group"
+                              onClick={() => {
+                                setActiveMenu(null);
+                                setIsMenuOpen(false);
+                              }}
+                            >
+                              <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 flex items-center justify-center mr-3 border border-white/5">
+                                <span className="text-xl filter drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">{service.icon}</span>
                               </div>
-                            </div>
-                          </Link>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Navigation principale */}
-                  <div className="space-y-4">
-                    <Link
-                      to="/about"
-                      onClick={() => setIsMenuOpen(false)}
-                      className="block px-4 py-3 text-white hover:bg-white/5 rounded-xl transition-all"
-                    >
-                      À propos
-                    </Link>
-                    <Link
-                      to="/contact"
-                      onClick={() => setIsMenuOpen(false)}
-                      className="block px-4 py-3 text-white hover:bg-white/5 rounded-xl transition-all"
-                    >
-                      Contact
-                    </Link>
-                  </div>
+                              <div className="flex-1">
+                                <span className="block text-sm font-medium text-white group-hover:text-blue-400 transition-colors">
+                                  {service.name}
+                                </span>
+                                <span className="text-xs text-gray-400/80">{service.price}</span>
+                              </div>
+                              <motion.div
+                                className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                                whileHover={{ scale: 1.2 }}
+                              >
+                                <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                              </motion.div>
+                            </Link>
+                          </motion.div>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
-                {/* Boutons de connexion */}
-                <div className="space-y-4 mt-8">
-                  {user ? (
-                    <>
-                      {user.isAdmin && (
-                        <Link
-                          to="/admin"
-                          onClick={() => setIsMenuOpen(false)}
-                          className="block w-full py-3 text-center text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all"
-                        >
-                          Admin
-                        </Link>
-                      )}
-                      <Link
-                        to="/login"
-                        onClick={() => setIsMenuOpen(false)}
-                        className="block w-full py-3 text-center text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all"
-                      >
-                        Connexion
-                      </Link>
-                      <Link
-                        to="/register"
-                        onClick={() => setIsMenuOpen(false)}
-                        className="block w-full py-3 text-center bg-gradient-to-r from-blue-400 to-purple-400 text-white rounded-xl"
-                      >
-                        Inscription
-                      </Link>
-                    </>
-                  ) : (
-                    <>
-                      <Link
-                        to="/login"
-                        onClick={() => setIsMenuOpen(false)}
-                        className="block w-full py-3 text-center text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all"
-                      >
-                        Connexion
-                      </Link>
-                      <Link
-                        to="/register"
-                        onClick={() => setIsMenuOpen(false)}
-                        className="block w-full py-3 text-center bg-gradient-to-r from-blue-400 to-purple-400 text-white rounded-xl"
-                      >
-                        Inscription
-                      </Link>
-                    </>
-                  )}
-                </div>
+                <Link
+                  to="/about"
+                  className={`block px-4 py-3 rounded-xl transition-all ${
+                    isActive('/about') ? 'bg-white/10 text-white border border-white/10 backdrop-blur-xl' : 'text-gray-300 hover:text-white hover:bg-white/5'
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  À Propos
+                </Link>
+
+                <Link
+                  to="/contact"
+                  className="block px-4 py-3 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-xl font-medium text-center hover:shadow-lg hover:shadow-blue-500/25 transition-all border border-white/10 backdrop-blur-xl"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Nous Contacter
+                </Link>
+
+                {user ? (
+                  <div className="space-y-2 pt-4 border-t border-white/10">
+                    <Link
+                      to="/admin"
+                      className="block px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all backdrop-blur-xl"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setIsMenuOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all backdrop-blur-xl"
+                    >
+                      Déconnexion
+                    </button>
+                  </div>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="block px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all backdrop-blur-xl"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Connexion
+                  </Link>
+                )}
               </div>
-
-              {/* Bouton de fermeture */}
-              <button
-                onClick={() => setIsMenuOpen(false)}
-                className="absolute top-4 right-4 p-2 text-white"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-              </button>
             </motion.div>
           )}
         </AnimatePresence>
       </nav>
+
+      {/* Overlay amélioré */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+            onClick={() => setIsMenuOpen(false)}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 };

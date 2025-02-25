@@ -26,46 +26,44 @@ const SocialMedia = () => {
     }
   ];
 
-  const packages = [
-    {
-      name: "Essentiel",
+  const pricing = {
+    basic: {
+      name: "Social Starter",
       price: "599€/mois",
       features: [
         "2 réseaux sociaux",
-        "12 posts par mois",
-        "Stories hebdomadaires",
+        "8 posts/mois",
+        "Design de base",
         "Rapport mensuel",
-        "Support par email"
+        "Support par email",
+        "Veille concurrentielle"
       ]
     },
-    {
-      name: "Business",
-      price: "999€/mois",
+    pro: {
+      name: "Social Business",
+      price: "1199€/mois",
       features: [
         "4 réseaux sociaux",
-        "20 posts par mois",
-        "Stories quotidiennes",
-        "Rapport hebdomadaire",
+        "20 posts/mois",
+        "Design personnalisé",
+        "Stories & Reels",
         "Support prioritaire",
-        "Stratégie personnalisée",
-        "Publicités incluses"
+        "Stratégie de contenu"
       ]
     },
-    {
-      name: "Premium",
-      price: "1499€/mois",
+    enterprise: {
+      name: "Social Enterprise",
+      price: "Sur devis",
       features: [
-        "Tous les réseaux sociaux",
-        "Posts quotidiens",
-        "Stories & Reels",
-        "Rapport en temps réel",
-        "Support 24/7",
-        "Stratégie avancée",
-        "Budget ads inclus",
-        "Personal branding"
+        "Réseaux illimités",
+        "Posts illimités",
+        "Design premium",
+        "Contenu sur mesure",
+        "Support dédié 24/7",
+        "Stratégie globale"
       ]
     }
-  ];
+  };
 
   return (
     <div className="min-h-screen bg-[#1a1a2e] text-white">
@@ -79,28 +77,28 @@ const SocialMedia = () => {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 px-4">
               Gestion Professionnelle de vos{" "}
               <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                 Réseaux Sociaux
               </span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+            <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto mb-6 sm:mb-8 px-4">
               Développez votre présence en ligne et engagez votre communauté avec une stratégie social media sur mesure
             </p>
-            <div className="flex justify-center gap-4">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <div className="flex flex-col sm:flex-row justify-center gap-4 px-4">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
                 <Link
                   to="/contact"
-                  className="px-8 py-3 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all"
+                  className="block w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all text-center"
                 >
                   Commencer maintenant
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
                 <Link
                   to="/contact"
-                  className="px-8 py-3 border border-white/10 rounded-full font-medium hover:bg-white/5 transition-all"
+                  className="block w-full sm:w-auto px-8 py-3 border border-white/10 rounded-full font-medium hover:bg-white/5 transition-all text-center"
                 >
                   Demander un devis
                 </Link>
@@ -117,7 +115,7 @@ const SocialMedia = () => {
             <h2 className="text-3xl font-bold mb-4">Plateformes Gérées</h2>
             <p className="text-gray-400">Une expertise sur tous les réseaux sociaux majeurs</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-0">
             {platforms.map((platform, index) => (
               <motion.div
                 key={platform.name}
@@ -125,13 +123,13 @@ const SocialMedia = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.2 }}
-                className="bg-white/5 rounded-2xl p-6 backdrop-blur-xl border border-white/10"
+                className="bg-white/5 rounded-2xl p-4 sm:p-6 backdrop-blur-xl border border-white/10"
               >
-                <div className="text-4xl mb-4">{platform.icon}</div>
-                <h3 className="text-xl font-semibold mb-4">{platform.name}</h3>
+                <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">{platform.icon}</div>
+                <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">{platform.name}</h3>
                 <ul className="space-y-2">
                   {platform.features.map((feature, idx) => (
-                    <li key={idx} className="text-gray-400 flex items-center">
+                    <li key={idx} className="text-sm sm:text-base text-gray-400 flex items-center">
                       <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
                       {feature}
                     </li>
@@ -151,7 +149,7 @@ const SocialMedia = () => {
             <p className="text-gray-400">Des solutions adaptées à vos besoins</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {packages.map((pkg, index) => (
+            {Object.values(pricing).map((pkg, index) => (
               <motion.div
                 key={pkg.name}
                 initial={{ opacity: 0, y: 20 }}

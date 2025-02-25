@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
+import About from './pages/About';
 import Services from './pages/Services';
 import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
@@ -12,6 +13,8 @@ import Register from './pages/Register';
 import Admin from './pages/Admin';
 import AdminMessages from './pages/AdminMessages';
 import PrivateRoute from './components/PrivateRoute';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 
 // Import des pages de services
 import Web from './pages/services/Web';
@@ -29,11 +32,14 @@ const App = () => {
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
               <Route path="/services" element={<Services />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
               
               {/* Routes des services */}
               <Route path="/services/web" element={<Web />} />

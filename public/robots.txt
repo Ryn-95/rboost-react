@@ -1,12 +1,15 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Allow: /
-Disallow: /admin/
-Disallow: /login
-Disallow: /register
 
 # Sitemap
-Sitemap: https://rboost-react-ryns-projects-df7e5921.vercel.app/sitemap.xml
+Sitemap: https://rboost-react.vercel.app/sitemap.xml
+
+# Interdire l'accès aux fichiers sensibles
+Disallow: /api/
+Disallow: /.env
+Disallow: /.git/
+Disallow: /node_modules/
 
 # Crawl-delay
 Crawl-delay: 10

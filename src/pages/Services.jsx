@@ -1,423 +1,594 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import Swal from 'sweetalert2';
 import SEO from '../components/SEO';
-import { CalendarDaysIcon, PhoneIcon, VideoCameraIcon } from '@heroicons/react/24/outline';
 
 const Services = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState('all');
-    const { scrollYProgress } = useScroll();
-    const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
-
-    // Catégories de services
-    const categories = [
-        { id: 'all', name: 'Tous les services' },
-        { id: 'web', name: 'Développement Web' },
-        { id: 'marketing', name: 'Marketing Digital' },
-        { id: 'design', name: 'Design & UI/UX' }
-    ];
+    const [selectedService, setSelectedService] = useState(null);
 
     const services = [
         {
-            id: 0,
-            name: 'Site Web Vitrine',
-            category: 'web',
-            image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
-            icon: (
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                </svg>
-            ),
-            description: "Une vitrine en ligne professionnelle pour présenter votre entreprise et vos services.",
-            features: ['Design responsive', 'SEO optimisé', 'Formulaire de contact', 'Hébergement inclus', 'Maintenance 24/7'],
-            price: '999,99 €',
-            technologies: ['React', 'Next.js', 'Tailwind CSS'],
-            backgroundImage: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&w=1200&q=80'
+            title: "Développement Web",
+            description: "Sites vitrines, e-commerce et applications web sur mesure avec les dernières technologies.",
+            icon: "🚀",
+            gradient: "from-blue-500 to-cyan-500",
+            features: ["React.js", "Next.js", "Node.js", "Performance optimisée"],
+            link: "/services/web",
+            delay: 0.2,
+            bgPattern: "radial-gradient(circle at 10% 20%, rgb(0, 107, 141) 0%, rgb(0, 69, 91) 90%)",
+            stats: [
+                { value: "99%", label: "Performance" },
+                { value: "490€", label: "Prix de base" },
+                { value: "<1s", label: "Temps de chargement" }
+            ],
+            technologies: ["React", "Vue.js", "Next.js", "Node.js", "MongoDB", "PostgreSQL"],
+            processSteps: [
+                "Analyse des besoins",
+                "Design UX/UI",
+                "Développement",
+                "Tests & Optimisation",
+                "Déploiement",
+                "Maintenance"
+            ]
         },
         {
-            id: 1,
-            name: 'Marketing Digital',
-            category: 'marketing',
-            image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=800&q=80',
-            icon: (
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                </svg>
-            ),
-            description: "Stratégies marketing complètes pour augmenter votre visibilité en ligne.",
-            features: ['SEO', 'Réseaux sociaux', 'Publicité en ligne', 'Analyse de données', 'Rapports mensuels'],
-            price: '799,99 €/mois',
-            technologies: ['Google Ads', 'Meta Ads', 'Analytics'],
-            backgroundImage: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=80'
+            title: "Référencement SEO",
+            description: "Optimisation pour les moteurs de recherche et stratégie de contenu pour plus de visibilité.",
+            icon: "📈",
+            gradient: "from-purple-500 to-pink-500",
+            features: ["Audit SEO", "Optimisation technique", "Content marketing", "Suivi des positions"],
+            link: "/services/seo",
+            delay: 0.3,
+            bgPattern: "radial-gradient(circle at 10% 20%, rgb(133, 29, 186) 0%, rgb(95, 21, 133) 90%)",
+            stats: [
+                { value: "+80%", label: "Trafic organique" },
+                { value: "490€", label: "Prix de base" },
+                { value: "+65%", label: "Conversions" }
+            ],
+            technologies: ["Google Analytics", "SEMrush", "Ahrefs", "Screaming Frog", "Google Search Console"],
+            processSteps: [
+                "Audit initial",
+                "Optimisation on-page",
+                "Création de contenu",
+                "Link building",
+                "Suivi des positions",
+                "Rapports mensuels"
+            ]
         },
         {
-            id: 2,
-            name: 'Social Media',
-            category: 'marketing',
-            image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80',
-            icon: (
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
-                </svg>
-            ),
+            title: "Google Ads",
+            description: "Campagnes publicitaires ciblées pour atteindre rapidement vos objectifs commerciaux.",
+            icon: "🎯",
+            gradient: "from-amber-500 to-orange-500",
+            features: ["Search Ads", "Display Ads", "Remarketing", "Analytics"],
+            link: "/services/ads",
+            delay: 0.4,
+            bgPattern: "radial-gradient(circle at 10% 20%, rgb(255, 126, 0) 0%, rgb(214, 96, 0) 90%)",
+            stats: [
+                { value: "x3", label: "ROI moyen" },
+                { value: "490€", label: "Prix de base" },
+                { value: "+150%", label: "Conversions" }
+            ],
+            technologies: ["Google Ads", "Google Analytics", "Google Tag Manager", "Facebook Ads", "LinkedIn Ads"],
+            processSteps: [
+                "Analyse de marché",
+                "Stratégie de ciblage",
+                "Création des annonces",
+                "Optimisation continue",
+                "A/B Testing",
+                "Rapports de performance"
+            ]
+        },
+        {
+            title: "Social Media",
             description: "Gestion professionnelle de vos réseaux sociaux pour développer votre communauté.",
-            features: ['Création de contenu', 'Community management', 'Analyse des performances', 'Veille concurrentielle', 'Stratégie éditoriale'],
-            price: '599,99 €/mois',
-            technologies: ['Instagram', 'Facebook', 'LinkedIn'],
-            backgroundImage: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&q=80'
-        },
-        {
-            id: 3,
-            name: 'Design UI/UX',
-            category: 'design',
-            icon: (
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                </svg>
-            ),
-            description: "Design d'interfaces modernes et expérience utilisateur optimisée.",
-            features: ['Maquettes interactives', 'Tests utilisateurs', 'Design System', 'Responsive Design', 'Accessibilité'],
-            price: '1299,99 €',
-            technologies: ['Figma', 'Adobe XD', 'Sketch'],
-            backgroundImage: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&q=80'
+            icon: "💫",
+            gradient: "from-green-500 to-emerald-500",
+            features: ["Stratégie sociale", "Création de contenu", "Community management", "Publicité sociale"],
+            link: "/services/social-media",
+            delay: 0.5,
+            bgPattern: "radial-gradient(circle at 10% 20%, rgb(12, 180, 87) 0%, rgb(0, 150, 70) 90%)",
+            stats: [
+                { value: "+200%", label: "Engagement" },
+                { value: "490€", label: "Prix de base" },
+                { value: "+10k", label: "Followers/mois" }
+            ],
+            technologies: ["Instagram", "Facebook", "LinkedIn", "TikTok", "Twitter", "Canva Pro"],
+            processSteps: [
+                "Audit des réseaux",
+                "Stratégie éditoriale",
+                "Création de contenu",
+                "Community management",
+                "Publicité sociale",
+                "Analyse des résultats"
+            ]
         }
     ];
 
-    const handleScheduleCall = (type) => {
-        Swal.fire({
-            title: 'Planifier un rendez-vous',
-            html: `
-                <div class="space-y-4">
-                    <div class="text-left">
-                        <label class="block text-sm font-medium text-gray-700">Nom complet</label>
-                        <input type="text" id="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                    </div>
-                    <div class="text-left">
-                        <label class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" id="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                    </div>
-                    <div class="text-left">
-                        <label class="block text-sm font-medium text-gray-700">Date souhaitée</label>
-                        <input type="date" id="date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                    </div>
-                    <div class="text-left">
-                        <label class="block text-sm font-medium text-gray-700">Message</label>
-                        <textarea id="message" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
-                    </div>
-                </div>
-            `,
-            showCancelButton: true,
-            confirmButtonText: 'Planifier',
-            cancelButtonText: 'Annuler',
-            confirmButtonColor: '#3B82F6',
-            cancelButtonColor: '#6B7280',
-            preConfirm: () => {
-                return {
-                    name: document.getElementById('name').value,
-                    email: document.getElementById('email').value,
-                    date: document.getElementById('date').value,
-                    message: document.getElementById('message').value
-                }
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Demande envoyée !',
-                    text: 'Nous vous contacterons rapidement pour confirmer le rendez-vous.',
-                    icon: 'success'
-                });
-            }
-        });
-    };
-
-    const handleSubscribe = (serviceId, serviceName) => {
-        if (!isLoggedIn) {
-            Swal.fire({
-                title: 'Connexion requise',
-                text: 'Vous devez être connecté pour souscrire à un service',
-                icon: 'info',
-                showCancelButton: true,
-                confirmButtonText: 'Se connecter',
-                cancelButtonText: 'Annuler',
-                confirmButtonColor: '#3B82F6',
-                cancelButtonColor: '#6B7280',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = '/login';
-                }
-            });
-            return;
-        }
-
-        Swal.fire({
-            title: 'Confirmation',
-            text: `Voulez-vous souscrire au service "${serviceName}" ?`,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Oui, souscrire',
-            cancelButtonText: 'Annuler',
-            confirmButtonColor: '#3B82F6',
-            cancelButtonColor: '#6B7280',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Traitement en cours',
-                    text: 'Veuillez patienter...',
-                    allowOutsideClick: false,
-                    showConfirmButton: false,
-                    willOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
-
-                setTimeout(() => {
-                    Swal.fire('Succès', 'Souscription effectuée avec succès', 'success');
-                }, 1500);
-            }
-        });
-    };
-
     return (
-        <div className="min-h-screen bg-gray-900 pb-20">
+        <div className="min-h-screen bg-gray-50">
             <SEO 
-                title="Nos Services - RBoost Digital | Solutions Web & Marketing"
-                description="Découvrez nos services de création de sites web, référencement SEO, publicité en ligne et marketing digital. Solutions personnalisées pour votre croissance."
-                keywords="services web, création site internet, référencement SEO, publicité en ligne, marketing digital, développement web"
+                title="Services - RBoost Digital"
+                description="Découvrez nos services de développement web, SEO, publicité en ligne et social media. Solutions digitales sur mesure pour votre entreprise."
+                keywords="développement web, SEO, Google Ads, social media, marketing digital"
                 url="/services"
             />
             
-            {/* Hero Section */}
-            <section className="relative py-32 overflow-hidden">
-                <div className="absolute inset-0">
-                    <div className="absolute inset-0 bg-gradient-to-b from-gray-900 to-gray-800 opacity-90"></div>
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.1),transparent)]"></div>
-                    <div className="grain absolute inset-0 opacity-30"></div>
+            {/* Hero Section avec effet parallaxe */}
+            <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900">
+                    {/* Effet de particules animées */}
+                    {[...Array(20)].map((_, i) => (
+                        <motion.div
+                            key={i}
+                            className="absolute w-1 h-1 bg-white rounded-full"
+                            initial={{ 
+                                x: Math.random() * window.innerWidth,
+                                y: Math.random() * window.innerHeight,
+                                scale: 0
+                            }}
+                            animate={{ 
+                                y: [null, Math.random() * -500],
+                                scale: [0, 1, 0],
+                                opacity: [0, 0.5, 0]
+                            }}
+                            transition={{
+                                duration: Math.random() * 3 + 2,
+                                repeat: Infinity,
+                                ease: "linear",
+                                delay: Math.random() * 2
+                            }}
+                        />
+                    ))}
                 </div>
                 
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                <div className="container mx-auto px-4 relative z-10">
+                    <div className="max-w-4xl mx-auto text-center">
                     <motion.div 
-                        className="text-center"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                    >
-                        <motion.span 
-                            className="inline-block text-blue-400 text-lg font-semibold mb-4"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
+                            transition={{ duration: 0.8 }}
+                            className="mb-8"
                         >
+                            <span className="inline-block px-6 py-2 bg-white/10 backdrop-blur-xl rounded-full text-blue-200 text-sm mb-6">
                             Nos Services
-                        </motion.span>
+                            </span>
+                        </motion.div>
+
                         <motion.h1 
-                            className="text-5xl md:text-6xl font-bold text-white mb-6"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            className="text-5xl md:text-8xl font-light text-white mb-8 leading-tight"
                         >
-                            Solutions <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Sur Mesure</span>
+                            Solutions{' '}
+                            <span className="relative">
+                                <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+                                    digitales
+                                </span>
+                                <motion.span
+                                    className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-cyan-400/20 blur-xl"
+                                    animate={{ 
+                                        scale: [1, 1.2, 1],
+                                        opacity: [0.5, 0.8, 0.5]
+                                    }}
+                                    transition={{
+                                        duration: 3,
+                                        repeat: Infinity,
+                                        ease: "easeInOut"
+                                    }}
+                                />
+                            </span>
                         </motion.h1>
+
                         <motion.p 
-                            className="text-xl text-gray-400 max-w-3xl mx-auto mb-8"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.6 }}
+                            transition={{ duration: 0.8, delay: 0.4 }}
+                            className="text-xl text-blue-100/80 leading-relaxed max-w-2xl mx-auto"
                         >
-                            Découvrez notre gamme complète de services digitaux conçus pour répondre à vos besoins spécifiques
+                            Transformez votre vision en réalité avec nos solutions sur mesure
                         </motion.p>
-                        
-                        {/* Filtres de catégories */}
-                        <div className="flex flex-wrap justify-center gap-4 mb-12">
-                            {categories.map((category) => (
-                                <motion.button
-                                    key={category.id}
-                                    onClick={() => setSelectedCategory(category.id)}
-                                    className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                                        selectedCategory === category.id
-                                            ? 'bg-blue-500 text-white'
-                                            : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white'
-                                    }`}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                >
-                                    {category.name}
-                                </motion.button>
-                            ))}
-                        </div>
-                    </motion.div>
+                    </div>
+                </div>
+
+                {/* Vague décorative améliorée */}
+                <div className="absolute bottom-0 left-0 right-0 overflow-hidden">
+                    <svg 
+                        viewBox="0 0 1200 120" 
+                        preserveAspectRatio="none" 
+                        className="relative block w-full h-[150px]"
+                        style={{ transform: 'rotate(180deg)' }}
+                    >
+                        <path 
+                            d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" 
+                            className="fill-gray-50"
+                            opacity=".25"
+                        />
+                        <path 
+                            d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" 
+                            className="fill-gray-50"
+                            opacity=".5"
+                        />
+                        <path 
+                            d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" 
+                            className="fill-gray-50"
+                        />
+                    </svg>
                 </div>
             </section>
 
-            {/* Services Section */}
-            <section className="py-20">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {services
-                            .filter(service => selectedCategory === 'all' || service.category === selectedCategory)
-                            .map((service, index) => (
-                                <motion.article 
-                                    key={service.id}
+            {/* Services Section avec mise en page innovante */}
+            <section className="py-20 md:py-32 relative">
+                <div className="container mx-auto px-4">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="grid md:grid-cols-2 gap-12">
+                            {services.map((service, index) => (
+                                <motion.div
+                                    key={index}
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
-                                    transition={{ duration: 0.5, delay: index * 0.2 }}
-                                    className="group relative service-card bg-gray-800/50 backdrop-blur-lg rounded-2xl overflow-hidden border border-white/10"
+                                    transition={{ duration: 0.8, delay: service.delay }}
+                                    className="group relative"
+                                    onClick={() => setSelectedService(service)}
                                 >
-                                    {/* Image de fond avec overlay */}
-                                    <div className="absolute inset-0 z-0">
-                                        <img 
-                                            src={service.backgroundImage}
-                                            alt={service.name}
-                                            className="w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-500"
-                                            onError={(e) => {
-                                                e.target.onerror = null;
-                                                e.target.src = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80';
-                                            }}
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-b from-gray-900/50 to-gray-900/90"></div>
+                                    <div 
+                                        className="relative p-8 rounded-3xl overflow-hidden transition-all duration-500 cursor-pointer transform hover:scale-[1.02] hover:shadow-2xl"
+                                        style={{ background: service.bgPattern }}
+                                    >
+                                        {/* Effet de brillance au survol */}
+                                        <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-r from-white via-white/0 to-white/0 group-hover:translate-x-full transform -translate-x-full transition-transform duration-1000"></div>
+                                        
+                                        <div className="relative z-10">
+                                            <div className="flex items-center justify-between mb-8">
+                                                <span className="text-5xl transform group-hover:scale-110 transition-transform duration-300">
+                                                    {service.icon}
+                                                </span>
+                                                <motion.div
+                                                    whileHover={{ rotate: 90 }}
+                                                    transition={{ duration: 0.3 }}
+                                                    className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"
+                                                >
+                                                    <span className="text-white">→</span>
+                                                </motion.div>
                                     </div>
                                     
-                                    {/* Contenu principal */}
-                                    <div className="relative z-10 p-8">
-                                        <div className="flex items-center justify-between mb-6">
-                                            <div className="service-icon w-16 h-16 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-2xl flex items-center justify-center">
-                                                {service.icon}
-                                            </div>
-                                            <div className="flex gap-2">
-                                                {service.technologies.map((tech, idx) => (
-                                                    <span 
-                                                        key={idx}
-                                                        className="px-3 py-1 text-xs font-medium text-white bg-white/10 rounded-full"
-                                                    >
-                                                        {tech}
-                                                    </span>
+                                            <h3 className="text-2xl font-medium text-white mb-4">
+                                                {service.title}
+                                            </h3>
+                                            
+                                            <p className="text-white/80 mb-6 leading-relaxed">
+                                                {service.description}
+                                            </p>
+
+                                            {/* Stats */}
+                                            <div className="grid grid-cols-3 gap-4 mb-6">
+                                                {service.stats.map((stat, i) => (
+                                                    <div key={i} className="text-center">
+                                                        <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
+                                                        <div className="text-xs text-white/60">{stat.label}</div>
+                                                    </div>
                                                 ))}
                                             </div>
+                                            
+                                            <div className="flex flex-wrap gap-2 mb-6">
+                                                {service.features.map((feature, i) => (
+                                                    <span 
+                                                        key={i}
+                                                        className="px-4 py-1.5 text-sm bg-white/10 backdrop-blur-sm text-white rounded-full border border-white/10"
+                                                    >
+                                                        {feature}
+                                                    </span>
+                                                ))}
                                         </div>
 
-                                        <h2 className="text-2xl font-bold text-white mb-4 group">
-                                            <span className="bg-gradient-to-r from-blue-400 to-emerald-400 bg-[length:0%_2px] bg-no-repeat bg-left-bottom group-hover:bg-[length:100%_2px] transition-all duration-500">
-                                                {service.name}
+                                            {/* Technologies */}
+                                            <div className="border-t border-white/10 pt-6 mt-6">
+                                                <h4 className="text-sm text-white/60 mb-3">Technologies utilisées</h4>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {service.technologies.map((tech, i) => (
+                                                        <span key={i} className="text-xs text-white/80 bg-white/5 px-3 py-1 rounded-full">
+                                                            {tech}
                                             </span>
-                                        </h2>
-                                        
-                                        <p className="text-gray-300 mb-6 leading-relaxed">
-                                            {service.description}
-                                        </p>
-
-                                        <ul className="space-y-3 mb-6">
-                                            {service.features.map((feature, idx) => (
-                                                <li key={idx} className="flex items-center text-gray-300">
-                                                    <svg className="w-5 h-5 mr-2 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
-                                                    </svg>
-                                                    {feature}
-                                                </li>
-                                            ))}
-                                        </ul>
-
-                                        <div className="flex items-center justify-between mt-8">
-                                            <span className="text-2xl font-bold text-white">{service.price}</span>
-                                            <button
-                                                onClick={() => handleSubscribe(service.id, service.name)}
-                                                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-emerald-500 text-white font-medium rounded-xl hover:opacity-90 transition-opacity"
-                                            >
-                                                Souscrire
-                                            </button>
+                                                    ))}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </motion.article>
+                                </motion.div>
                             ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Cercles décoratifs */}
+                <div className="absolute top-1/4 left-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-1/4 right-0 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl"></div>
+            </section>
+
+            {/* Section Processus */}
+            <section className="py-20 bg-white relative overflow-hidden">
+                <div className="container mx-auto px-4">
+                    <div className="max-w-7xl mx-auto">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="text-center mb-16"
+                        >
+                            <h2 className="text-4xl font-light text-gray-900 mb-6">
+                                Notre Processus
+                            </h2>
+                            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                                Une approche méthodique pour des résultats exceptionnels
+                            </p>
+                        </motion.div>
+
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {[
+                                {
+                                    icon: "🎯",
+                                    title: "Analyse",
+                                    description: "Étude approfondie de vos besoins et objectifs"
+                                },
+                                {
+                                    icon: "💡",
+                                    title: "Stratégie",
+                                    description: "Élaboration d'un plan d'action personnalisé"
+                                },
+                                {
+                                    icon: "🚀",
+                                    title: "Exécution",
+                                    description: "Mise en œuvre et optimisation continue"
+                                }
+                            ].map((step, index) => (
+                        <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: index * 0.2 }}
+                                    className="relative"
+                                >
+                                    <div className="bg-gray-50 rounded-2xl p-8 relative z-10">
+                                        <span className="text-4xl mb-6 inline-block">{step.icon}</span>
+                                        <h3 className="text-xl font-medium text-gray-900 mb-4">{step.title}</h3>
+                                        <p className="text-gray-600">{step.description}</p>
+                                    </div>
+                                    {index < 2 && (
+                                        <motion.div
+                                            className="hidden md:block absolute top-1/2 left-full w-16 h-0.5 bg-gray-200 z-0"
+                                            style={{ transform: 'translateX(-50%)' }}
+                                        />
+                                    )}
+                        </motion.div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* Section Consultation */}
-            <section className="py-20 bg-gray-800/50">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl font-bold text-white mb-4">Planifiez une consultation gratuite</h2>
-                        <p className="text-xl text-gray-400">Discutons de vos objectifs et trouvons la meilleure solution pour votre projet</p>
-                    </div>
+            {/* Section CTA améliorée */}
+            <section className="py-20 md:py-32 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900">
+                    {/* Effet de vagues animées */}
+                    <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                        <motion.path
+                            d="M0,0 L100,0 C150,100 200,100 300,0 C400,-100 450,-100 500,0 L500,500 L0,500 Z"
+                            fill="none"
+                            stroke="rgba(255,255,255,0.1)"
+                            strokeWidth="2"
+                            animate={{
+                                d: [
+                                    "M0,0 L100,0 C150,100 200,100 300,0 C400,-100 450,-100 500,0 L500,500 L0,500 Z",
+                                    "M0,0 L100,0 C150,-100 200,-100 300,0 C400,100 450,100 500,0 L500,500 L0,500 Z"
+                                ]
+                            }}
+                            transition={{
+                                duration: 5,
+                                repeat: Infinity,
+                                repeatType: "reverse",
+                                ease: "easeInOut"
+                            }}
+                        />
+                    </svg>
+                </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {/* Appel téléphonique */}
+                <div className="container mx-auto px-4 relative z-10">
+                    <div className="max-w-4xl mx-auto text-center">
                         <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            className="bg-gray-900/50 p-8 rounded-2xl border border-white/10 cursor-pointer"
-                            onClick={() => handleScheduleCall('phone')}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8 }}
+                            className="bg-white/10 backdrop-blur-xl p-12 rounded-3xl border border-white/10"
                         >
-                            <PhoneIcon className="w-12 h-12 text-blue-500 mb-6" />
-                            <h3 className="text-xl font-bold text-white mb-4">Appel téléphonique</h3>
-                            <p className="text-gray-400 mb-4">Échangeons rapidement sur vos besoins et objectifs</p>
-                            <span className="text-blue-400 font-medium">15-30 minutes</span>
-                        </motion.div>
-
-                        {/* Visioconférence */}
-                        <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            className="bg-gray-900/50 p-8 rounded-2xl border border-white/10 cursor-pointer"
-                            onClick={() => handleScheduleCall('video')}
-                        >
-                            <VideoCameraIcon className="w-12 h-12 text-emerald-500 mb-6" />
-                            <h3 className="text-xl font-bold text-white mb-4">Visioconférence</h3>
-                            <p className="text-gray-400 mb-4">Présentons en détail votre projet et nos solutions</p>
-                            <span className="text-emerald-400 font-medium">30-45 minutes</span>
-                        </motion.div>
-
-                        {/* Rendez-vous personnalisé */}
-                        <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            className="bg-gray-900/50 p-8 rounded-2xl border border-white/10 cursor-pointer"
-                            onClick={() => handleScheduleCall('meeting')}
-                        >
-                            <CalendarDaysIcon className="w-12 h-12 text-purple-500 mb-6" />
-                            <h3 className="text-xl font-bold text-white mb-4">Rendez-vous personnalisé</h3>
-                            <p className="text-gray-400 mb-4">Planifions une rencontre approfondie pour votre projet</p>
-                            <span className="text-purple-400 font-medium">45-60 minutes</span>
+                            <h2 className="text-4xl md:text-6xl font-light text-white mb-8">
+                                Prêt à{' '}
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+                                    transformer
+                                </span>{' '}
+                                votre projet ?
+                            </h2>
+                            <p className="text-xl text-blue-100/80 mb-12 leading-relaxed">
+                                Discutons ensemble de vos ambitions et créons quelque chose d'extraordinaire
+                            </p>
+                            <motion.a
+                                href="/contact"
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="inline-flex items-center px-10 py-4 bg-white text-gray-900 rounded-full text-lg font-medium tracking-wide hover:bg-gray-50 transition-all duration-300 group"
+                            >
+                                Démarrer votre projet
+                                <motion.span
+                                    className="ml-2 transform group-hover:translate-x-1 transition-transform"
+                                    animate={{ x: [0, 5, 0] }}
+                                    transition={{ duration: 1.5, repeat: Infinity }}
+                                >
+                                    →
+                                </motion.span>
+                            </motion.a>
                         </motion.div>
                     </div>
                 </div>
             </section>
 
-            {/* Section FAQ */}
-            <section className="py-20">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl font-bold text-white mb-4">Questions fréquentes</h2>
-                        <p className="text-xl text-gray-400">Tout ce que vous devez savoir sur nos services</p>
+            {/* Modal de détails du service */}
+            <AnimatePresence>
+                {selectedService && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+                        onClick={() => setSelectedService(null)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            className="bg-white rounded-3xl p-8 max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+                            onClick={e => e.stopPropagation()}
+                        >
+                            {/* En-tête */}
+                            <div className="flex items-start justify-between mb-8">
+                                <div>
+                                    <div className="flex items-center gap-4 mb-4">
+                                        <span className="text-4xl">{selectedService.icon}</span>
+                                        <h3 className="text-3xl font-medium bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+                                            {selectedService.title}
+                                        </h3>
+                                    </div>
+                                    <p className="text-gray-600 text-lg">{selectedService.description}</p>
+                                </div>
+                                <button
+                                    onClick={() => setSelectedService(null)}
+                                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                                >
+                                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
                     </div>
 
                     <div className="space-y-8">
-                        <div className="bg-gray-800/50 p-6 rounded-2xl">
-                            <h3 className="text-xl font-bold text-white mb-4">Combien de temps faut-il pour créer un site web ?</h3>
-                            <p className="text-gray-400">La durée de création varie selon la complexité du projet. En général, un site vitrine prend 2-4 semaines, tandis qu'un e-commerce peut prendre 4-8 semaines.</p>
+                                {/* Statistiques */}
+                                <div className="grid grid-cols-3 gap-6 p-6 bg-gray-50 rounded-2xl">
+                                    {selectedService.stats.map((stat, index) => (
+                                        <div key={index} className="text-center">
+                                            <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-2">
+                                                {stat.value}
+                                            </div>
+                                            <div className="text-sm text-gray-600">{stat.label}</div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* Processus */}
+                                <div>
+                                    <h4 className="text-xl font-medium mb-6 flex items-center gap-2">
+                                        <span className="text-blue-600">
+                                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </span>
+                                        Notre processus
+                                    </h4>
+                                    <div className="space-y-4">
+                                        {selectedService.processSteps.map((step, index) => (
+                                            <motion.div
+                                                key={index}
+                                                initial={{ opacity: 0, x: -20 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ delay: index * 0.1 }}
+                                                className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+                                            >
+                                                <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-medium">
+                                                    {index + 1}
+                                                </div>
+                                                <div className="flex-1">
+                                                    <div className="font-medium text-gray-900">{step}</div>
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Technologies */}
+                                <div>
+                                    <h4 className="text-xl font-medium mb-6 flex items-center gap-2">
+                                        <span className="text-blue-600">
+                                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                            </svg>
+                                        </span>
+                                        Technologies utilisées
+                                    </h4>
+                                    <div className="flex flex-wrap gap-2">
+                                        {selectedService.technologies.map((tech, index) => (
+                                            <motion.span
+                                                key={index}
+                                                initial={{ opacity: 0, scale: 0.8 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                transition={{ delay: index * 0.1 }}
+                                                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors"
+                                            >
+                                                {tech}
+                                            </motion.span>
+                                        ))}
                         </div>
-                        <div className="bg-gray-800/50 p-6 rounded-2xl">
-                            <h3 className="text-xl font-bold text-white mb-4">Quels sont vos délais de livraison ?</h3>
-                            <p className="text-gray-400">Nos délais varient selon le type de projet. Nous établissons un planning détaillé lors de notre première consultation pour respecter vos échéances.</p>
                         </div>
-                        <div className="bg-gray-800/50 p-6 rounded-2xl">
-                            <h3 className="text-xl font-bold text-white mb-4">Proposez-vous un support après-vente ?</h3>
-                            <p className="text-gray-400">Oui, nous offrons un support technique continu et une maintenance régulière pour tous nos projets. Notre équipe est disponible 24/7 pour répondre à vos besoins.</p>
+
+                                {/* Fonctionnalités */}
+                                <div>
+                                    <h4 className="text-xl font-medium mb-6 flex items-center gap-2">
+                                        <span className="text-blue-600">
+                                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        Fonctionnalités clés
+                                    </h4>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        {selectedService.features.map((feature, index) => (
+                                            <motion.div
+                                                key={index}
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: index * 0.1 }}
+                                                className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg"
+                                            >
+                                                <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                                </svg>
+                                                <span className="text-gray-700">{feature}</span>
+                                            </motion.div>
+                                        ))}
                         </div>
                     </div>
 
-                    <div className="text-center mt-12">
+                                {/* CTA */}
+                                <div className="flex justify-center pt-6">
                         <Link
-                            to="/contact"
-                            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-emerald-500 text-white font-medium rounded-xl hover:opacity-90 transition-opacity"
-                        >
-                            Contactez-nous
-                            <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                            </svg>
+                                        to={selectedService.link}
+                                        className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-full text-lg font-medium hover:from-blue-700 hover:to-cyan-700 transition-all transform hover:scale-105"
+                                    >
+                                        Découvrir {selectedService.title}
+                                        <motion.span
+                                            className="ml-2"
+                                            animate={{ x: [0, 5, 0] }}
+                                            transition={{ duration: 1.5, repeat: Infinity }}
+                                        >
+                                            →
+                                        </motion.span>
                         </Link>
                     </div>
                 </div>
-            </section>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

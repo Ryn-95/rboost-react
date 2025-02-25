@@ -26,46 +26,44 @@ const Seo = () => {
     }
   ];
 
-  const packages = [
-    {
-      name: "Starter SEO",
+  const pricing = {
+    basic: {
+      name: "SEO Essentiel",
       price: "799€/mois",
       features: [
         "Audit SEO initial",
-        "Optimisation de 5 pages",
-        "2 articles de blog/mois",
+        "Optimisation on-page",
+        "Recherche de mots-clés",
         "Rapport mensuel",
-        "Support par email"
+        "Support par email",
+        "3 pages optimisées/mois"
       ]
     },
-    {
-      name: "Business SEO",
+    pro: {
+      name: "SEO Professionnel",
       price: "1499€/mois",
       features: [
-        "Audit SEO approfondi",
-        "Optimisation de 15 pages",
-        "4 articles de blog/mois",
-        "Stratégie de mots-clés",
+        "Tout SEO Essentiel +",
+        "Content marketing",
         "Link building",
-        "Rapport hebdomadaire",
-        "Support prioritaire"
+        "Optimisation technique",
+        "Support prioritaire",
+        "10 pages optimisées/mois"
       ]
     },
-    {
-      name: "Enterprise SEO",
-      price: "2499€/mois",
+    enterprise: {
+      name: "SEO Enterprise",
+      price: "Sur devis",
       features: [
-        "Audit SEO complet",
-        "Optimisation illimitée",
-        "8 articles de blog/mois",
-        "Stratégie avancée",
-        "Link building premium",
-        "Rapport personnalisé",
+        "Solution sur mesure",
+        "Stratégie personnalisée",
+        "Contenu premium",
+        "Link building avancé",
         "Support dédié 24/7",
-        "Formation équipe"
+        "Pages illimitées"
       ]
     }
-  ];
+  };
 
   const benefits = [
     {
@@ -102,28 +100,28 @@ const Seo = () => {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 px-4">
               SEO &{" "}
               <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                 Content Marketing
               </span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+            <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto mb-6 sm:mb-8 px-4">
               Optimisez votre visibilité en ligne et attirez plus de clients qualifiés grâce à notre expertise SEO
             </p>
-            <div className="flex justify-center gap-4">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <div className="flex flex-col sm:flex-row justify-center gap-4 px-4">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
                 <Link
                   to="/contact"
-                  className="px-8 py-3 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all"
+                  className="block w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all text-center"
                 >
                   Audit SEO Gratuit
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
                 <Link
                   to="/contact"
-                  className="px-8 py-3 border border-white/10 rounded-full font-medium hover:bg-white/5 transition-all"
+                  className="block w-full sm:w-auto px-8 py-3 border border-white/10 rounded-full font-medium hover:bg-white/5 transition-all text-center"
                 >
                   En savoir plus
                 </Link>
@@ -140,7 +138,7 @@ const Seo = () => {
             <h2 className="text-3xl font-bold mb-4">Nos Services SEO</h2>
             <p className="text-gray-400">Une approche complète pour votre référencement naturel</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-0">
             {services.map((service, index) => (
               <motion.div
                 key={service.name}
@@ -148,11 +146,11 @@ const Seo = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.2 }}
-                className="bg-white/5 rounded-2xl p-6 backdrop-blur-xl border border-white/10"
+                className="bg-white/5 rounded-2xl p-4 sm:p-6 backdrop-blur-xl border border-white/10"
               >
-                <div className="text-4xl mb-4">{service.icon}</div>
-                <h3 className="text-xl font-semibold mb-4">{service.name}</h3>
-                <p className="text-gray-400">{service.description}</p>
+                <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">{service.icon}</div>
+                <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">{service.name}</h3>
+                <p className="text-sm sm:text-base text-gray-400">{service.description}</p>
               </motion.div>
             ))}
           </div>
@@ -193,7 +191,7 @@ const Seo = () => {
             <p className="text-gray-400">Des solutions adaptées à vos objectifs</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {packages.map((pkg, index) => (
+            {Object.values(pricing).map((pkg, index) => (
               <motion.div
                 key={pkg.name}
                 initial={{ opacity: 0, y: 20 }}
